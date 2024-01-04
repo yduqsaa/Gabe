@@ -1,0 +1,77 @@
+COMP_SEM_ACESSO As CanvasComponent:
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =768
+    VAR_DESCRICAO: ="Sistema em Manutenção"
+    Width: =1366
+    X: =0
+    Y: =0
+    ZIndex: =3
+
+    COMP_SEM_ACESSO_CT As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =768
+        Visible: =true//VLC_IN_POPUP_STATUS
+        Width: =1366
+        ZIndex: =1
+
+        COMP_SEM_ACESSO_CT_FUNDO As button:
+            BorderThickness: =1
+            Color: =RGBA(0, 0, 0, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(237, 237, 237, 0.8)
+            Height: =223
+            PaddingLeft: =0
+            PaddingTop: =0
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: =
+            Width: =844
+            X: =261
+            Y: =273
+            ZIndex: =1
+
+        COMP_SEM_ACESSO_CT_TITULO As button:
+            BorderThickness: =1
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(0, 28, 67, 1)
+            Height: =50
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =16
+            Text: ="Aviso de acesso !"
+            Width: =844
+            X: =261
+            Y: =273
+            ZIndex: =4
+
+        COMP_SEM_ACESSO_CT_DESCRICAO_AVISO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Height: =44
+            PaddingLeft: =60
+            Size: =22
+            Text: ="Usuário sem permissões de acesso ao sistema"
+            Width: =App.Width
+            Y: =366
+            ZIndex: =12
+
+        COMP_SEM_ACESSO_CT_DESCRICAO As label:
+            Align: =Align.Center
+            Height: =44
+            Text: ="Verifique com seu gestor imediato"
+            Width: =App.Width
+            Y: =431
+            ZIndex: =13
+
+        COMP_SEM_ACESSO_CT_ICO As icon.History:
+            Color: =RGBA(246, 88, 16, 1)
+            Icon: =Icon.Warning
+            X: =306
+            Y: =356
+            ZIndex: =14
+

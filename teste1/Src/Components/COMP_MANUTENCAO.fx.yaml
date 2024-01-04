@@ -1,0 +1,78 @@
+COMP_MANUTENCAO As CanvasComponent:
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =768
+    VAR_DESCRICAO: ="Sistema em Manutenção"
+    VAR_DESCRICAO_STATUS: ="Previsão de retorno"
+    Width: =1366
+    X: =0
+    Y: =0
+    ZIndex: =2
+
+    COMP_MANUTENCAO_STATUS_1 As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =768
+        Visible: =true//VLC_IN_POPUP_STATUS
+        Width: =1366
+        ZIndex: =1
+
+        COMP_MANUTENCAO_STATUS_FUNDO_1 As button:
+            BorderThickness: =1
+            Color: =RGBA(0, 0, 0, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(237, 237, 237, 0.8)
+            Height: =483
+            PaddingLeft: =0
+            PaddingTop: =0
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: =
+            Width: =844
+            X: =261
+            Y: =143
+            ZIndex: =1
+
+        COMP_MANUTENCAO_STATUS_TITULO_1 As button:
+            BorderThickness: =1
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(0, 28, 67, 1)
+            Height: =50
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =16
+            Text: ="Desculpe o transtorno, estamos trabalhando para melhor atendê-lo !"
+            Width: =844
+            X: =261
+            Y: =109
+            ZIndex: =4
+
+        COMP_MANUTENCAO_STATUS_GIF_1 As image:
+            Height: =389
+            Image: =EM_MANUTENCAO
+            Width: =616
+            X: =375
+            Y: =218
+            ZIndex: =11
+
+        COMP_MANUTENCAO_DESCRICAO_1 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Height: =44
+            Size: =32
+            Text: =COMP_MANUTENCAO.VAR_DESCRICAO
+            Width: =App.Width
+            Y: =174
+            ZIndex: =12
+
+        COMP_MANUTENCAO_STATUS_DESCRICAO_1 As label:
+            Align: =Align.Center
+            Height: =44
+            Text: =COMP_MANUTENCAO.VAR_DESCRICAO_STATUS
+            Width: =App.Width
+            Y: =582
+            ZIndex: =13
+

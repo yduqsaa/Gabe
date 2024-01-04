@@ -1,0 +1,376 @@
+INICIO As screen:
+    BackgroundImage: =FUNDO_YDUQS
+    ImagePosition: =ImagePosition.Fill
+    OnVisible: =Select(IN_FUNCAO_VERSAO_MANUTENCAO)
+
+    IN_TITULO As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(0, 0, 0, 0.3)
+        FontWeight: =FontWeight.Bold
+        Height: =60
+        PaddingLeft: =30
+        Size: =24
+        Text: ="GABe - Gestão de Bolsas Exceção"
+        Width: =1366
+        ZIndex: =1
+
+    IN_VERSAO As label:
+        Align: =Align.Right
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        PaddingRight: =20
+        Text: |-
+            ="Versão: "&VGB_VERSAO
+        X: =1216
+        Y: =10
+        ZIndex: =5
+
+    IN_MENU_GALL As gallery.galleryHorizontal:
+        DelayItemLoading: =true
+        Height: =140
+        Items: |-
+            =Filter(
+                Table(
+                    {
+                        TEXT: "Nova",
+                        ONSELECT: SOLICITACAO,
+                        ICON: Icon.AddLibrary,
+                        VISIBLE: If(VGB_USUARIO_LOGADO_PERFIL.NOM_USUARIO_TIPO = "Remuneração e Benefícios - Solicitante",true,false)
+                    },
+                    {
+                        TEXT: "Solicitações",
+                        ONSELECT: SOLICITACOES,
+                        ICON: Icon.Waffle,
+                        VISIBLE: 
+                            If(
+                                VGB_USUARIO_LOGADO_PERFIL.NOM_USUARIO_TIPO in 
+                                    [
+                                        "Remuneração e Benefícios - Gestão",
+                                        "Remuneração e Benefícios - Solicitante"
+                                    ]
+                                ,true,false
+                            )
+                    },
+                    {
+                        TEXT: "Aprovações",
+                        ONSELECT: APROVACAO,
+                        ICON: Icon.CheckBadge,
+                        VISIBLE: true
+                    },
+                    {
+                        TEXT: "Treinamento",
+                        ONSELECT: App.ActiveScreen,
+                        ICON: Icon.Notebook,
+                        VISIBLE: true
+                    },
+                    {
+                        TEXT: "Usuários",
+                        ONSELECT: USUARIO,
+                        ICON: Icon.People,
+                        VISIBLE: If(VGB_USUARIO_LOGADO_PERFIL.NOM_USUARIO_TIPO = "Remuneração e Benefícios - Gestão",true,false)
+                    }
+                ),
+                VISIBLE = true
+            )
+        LoadingSpinner: =LoadingSpinner.Data
+        TemplateSize: =160
+        Width: =1318
+        X: =40
+        Y: =570
+        ZIndex: =6
+
+        IN_MENU_GALL_BTN As button:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            Color: =RGBA(237, 237, 237, 1)
+            Fill: =RGBA(1, 176, 193, 0.8)
+            Height: =120
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =Switch(
+                    ThisItem.TEXT,
+                    "Nova", UpdateContext({VLC_IN_POPUP_TIPO_SOLICITACAO: true}),
+                    "Treinamento", Launch("https://sway.office.com/YbyTBzk6a7tAOdaA?ref=Link"),
+                    Navigate(
+                        ThisItem.ONSELECT,
+                        ScreenTransition.Fade
+                    )
+                )
+            PressedColor: =RGBA(255, 255, 255, 1)
+            PressedFill: =ColorFade(Self.Fill, -10%)
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =13
+            Text: =ThisItem.TEXT
+            VerticalAlign: =VerticalAlign.Bottom
+            Width: =144
+            ZIndex: =1
+
+        IN_MENU_GALL_ICON As icon.History:
+            BorderStyle: =BorderStyle.None
+            Color: =RGBA(237, 237, 237, 1)
+            Height: =60
+            Icon: =ThisItem.ICON
+            OnSelect: =Select(IN_MENU_GALL_BTN)
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =10
+            Width: =60
+            X: =42
+            Y: =17
+            ZIndex: =2
+
+    IN_USUARIO As group:
+        Height: =5
+        Width: =5
+        X: =10
+        Y: =-122
+        ZIndex: =6
+
+        IN_USUARIO_FOTO As image:
+            Image: =VGB_USUARIO_LOGADO_FOTO
+            ImagePosition: =ImagePosition.Fill
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            X: =51
+            Y: =117
+            ZIndex: =2
+
+        IN_USUARIO_NOME As label:
+            Color: =RGBA(255, 255, 255, 1)
+            FontWeight: =FontWeight.Bold
+            Height: =43
+            Size: =20
+            Text: ="Olá, "&VGB_USUARIO_LOGADO_NOME
+            Width: =252
+            X: =161
+            Y: =131
+            ZIndex: =3
+
+        IN_USUARIO_EMAIL As label:
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =43
+            Size: =12
+            Text: =VGB_USUARIO_LOGADO_EMAIL
+            Width: =252
+            X: =161
+            Y: =174
+            ZIndex: =4
+
+    IN_POPUP_TIPO_SOLICITACAO As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =768
+        Visible: =VLC_IN_POPUP_TIPO_SOLICITACAO
+        Width: =1366
+        ZIndex: =7
+
+        IN_POPUP_TIPO_SOLICITACAO_DESCRICAO As button:
+            BorderThickness: =1
+            Color: =RGBA(0, 0, 0, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(237, 237, 237, 1)
+            Height: =269
+            PaddingLeft: =0
+            PaddingTop: =0
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: =""
+            Width: =576
+            X: =395
+            Y: =250
+            ZIndex: =1
+
+        IN_POPUP_TIPO_SOLICITACAO_TITULO As button:
+            BorderThickness: =1
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(0, 28, 67, 1)
+            Height: =50
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =16
+            Text: ="Tipo Solicitação"
+            Width: =576
+            X: =395
+            Y: =250
+            ZIndex: =2
+
+        IN_POPUP_TIPO_SOLICITACAO_BTN_FECHAR As icon.CancelBadge:
+            BorderStyle: =BorderStyle.None
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =35
+            Icon: =Icon.CancelBadge
+            OnSelect: |-
+                =UpdateContext({VLC_IN_POPUP_TIPO_SOLICITACAO: false})
+            Visible: =true//vPPConfirmaBolsa
+            Width: =35
+            X: =921
+            Y: =257
+            ZIndex: =3
+
+        IN_POPUP_TIPO_SOLICITACAO_GALL As gallery.galleryVertical:
+            DelayItemLoading: =true
+            Height: =189
+            Items: =Filter(A_GABE_D_SOLICITACAO_TIPO,ID_SOLICITACAO_TIPO = 1)
+            Layout: =Layout.Vertical
+            LoadingSpinner: =LoadingSpinner.Data
+            TemplateSize: =56
+            Width: =549
+            X: =409
+            Y: =314
+            ZIndex: =4
+
+            IN_POPUP_TIPO_SOLICITACAO_GALL_BTN As button:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Color: =RGBA(51, 51, 51, 1)
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: =
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =ColorFade(Self.Fill, -10%)
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Size: =13
+                Text: =ThisItem.NOM_SOLICITACAO_TIPO
+                Tooltip: =ThisItem.DESCRICAO
+                Width: =271
+                X: =11
+                ZIndex: =1
+
+            IN_POPUP_TIPO_SOLICITACAO_GALL_BTN_1 As button:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Color: =RGBA(237, 237, 237, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Fill: =RGBA(1, 176, 193, 1)
+                Height: =50
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Set(
+                        VGB_IN_ID_SOLICITACAO_TIPO,
+                        ThisItem.ID_SOLICITACAO_TIPO
+                    );
+                        Navigate(
+                            SOLICITACAO_EM_LOTE,
+                            ScreenTransition.Fade
+                        );
+                    //Reset(IN_POPUP_TIPO_SOLICITACAO_GALL_CK_LOTE);;
+                    Select(IN_POPUP_TIPO_SOLICITACAO_BTN_FECHAR)
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =ColorFade(Self.Fill, -10%)
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Size: =13
+                Text: ="Em Lote"
+                Tooltip: =ThisItem.DESCRICAO
+                Width: =110
+                X: =421
+                ZIndex: =2
+
+            IN_POPUP_TIPO_SOLICITACAO_GALL_BTN_2 As button:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Color: =RGBA(237, 237, 237, 1)
+                Fill: =RGBA(1, 176, 193, 1)
+                Height: =50
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =Set(
+                        VGB_IN_ID_SOLICITACAO_TIPO,
+                        ThisItem.ID_SOLICITACAO_TIPO
+                    );
+                    Navigate(
+                            SOLICITACAO,
+                            ScreenTransition.Fade
+                        );
+                    //Reset(IN_POPUP_TIPO_SOLICITACAO_GALL_CK_LOTE);;
+                    Select(IN_POPUP_TIPO_SOLICITACAO_BTN_FECHAR)
+                PaddingBottom: =0
+                PaddingLeft: =0
+                PaddingRight: =0
+                PaddingTop: =0
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =ColorFade(Self.Fill, -10%)
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Size: =13
+                Text: ="Unitário"
+                Tooltip: =ThisItem.DESCRICAO
+                Width: =110
+                X: =296
+                ZIndex: =3
+
+            Rectangle1 As rectangle:
+                BorderStyle: =BorderStyle.None
+                Fill: =RGBA(219, 219, 219, 1)
+                Height: =1
+                OnSelect: =Select(Parent)
+                Width: =549
+                Y: =55
+                ZIndex: =4
+
+    IN_COMP_LOADING As COMP_LOADING:
+        Visible: =VLC_LOADING
+        ZIndex: =8
+
+    IN_COMP_MANUTENCAO As COMP_MANUTENCAO:
+        VAR_DESCRICAO: |-
+            =Switch(
+                First(CLC_A_AA_D_MANUTENCAO).IND_STATUS,
+                1,"Sistema em manutenção",
+                2,"Sistema em atualização"
+            )
+        VAR_DESCRICAO_STATUS: =First(CLC_A_AA_D_MANUTENCAO).DESCRICAO_STATUS
+        Visible: =VGB_POPUP_MANUTENCAO
+        ZIndex: =9
+
+    IN_COMP_VERSAO As COMP_VERSAO:
+        Visible: =VGB_POPUP_VERSAO
+        ZIndex: =10
+
+    IN_FUNCAO_VERSAO_MANUTENCAO As button:
+        BorderStyle: =BorderStyle.None
+        BorderThickness: =0
+        Height: =30
+        OnSelect: |-
+            =UpdateContext({VLC_LOADING: true});
+            //Verifica a versão
+            Refresh(A_AA_D_MANUTENCAO);
+            ClearCollect(CLC_A_AA_D_MANUTENCAO,LookUp(A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO));
+            If(Trim(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).VERSAO) = VGB_VERSAO,Set(VGB_POPUP_VERSAO, false),Set(VGB_POPUP_VERSAO, true));
+            //Verifica o status manutenção/atualização
+            If(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).IND_STATUS > 0,Set(VGB_POPUP_MANUTENCAO, true),Set(VGB_POPUP_MANUTENCAO, false));
+            UpdateContext({VLC_LOADING: false})
+        Text: ="FUNCAO_VERSAO_MANUTENCAO"
+        Visible: =false
+        Width: =331
+        X: =594
+        Y: =10
+        ZIndex: =11
+

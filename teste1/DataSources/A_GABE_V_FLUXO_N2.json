@@ -1,0 +1,27 @@
+[
+  {
+    "ApiId": "/providers/microsoft.powerapps/apis/shared_sql",
+    "CdpRevision": {
+      "BaseUrl": "/v2",
+      "LastChangedTimeString": "2023-09-07T00:08:02.9190000Z",
+      "RevisionNumber": 2
+    },
+    "ConnectedDataSourceInfoNameMapping": {
+      "57dfb1b5-7d79-4046-a4da-fd831d5befe1-KeyId": "KeyId",
+      "DT_REFERENCIA": "DT_REFERENCIA",
+      "ID_FLUXO": "ID_FLUXO",
+      "ID_FLUXO_N2": "ID_FLUXO_N2",
+      "ID_USUARIO_SOLICITANTE": "ID_USUARIO_SOLICITANTE",
+      "IND_APROVADO": "IND_APROVADO",
+      "IND_REMOVIDO": "IND_REMOVIDO",
+      "LOTE": "LOTE",
+      "OBS": "OBS"
+    },
+    "DatasetName": "sqlpricingltv.database.windows.net,DEV",
+    "EncodeDataset": false,
+    "IsSampleData": false,
+    "IsWritable": false,
+    "Name": "A_GABE_V_FLUXO_N2",
+    "Type": "ConnectedDataSourceInfo"
+  }
+]

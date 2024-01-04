@@ -1,0 +1,57 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |-
+        =Set(VGB_USUARIO_LOGADO_EMAIL,UsuáriosdoOffice365.MyProfile().Mail);
+        //Set(VGB_USUARIO_LOGADO_EMAIL;"joao.megale@yduqs.com.br");;
+        Concurrent(
+            Set(VGB_USUARIO_LOGADO_FOTO,User().Image),
+            Set(VGB_USUARIO_LOGADO_NOME,UsuáriosdoOffice365.MyProfile().GivenName),
+            Set(VGB_USUARIO_LOGADO_ID,LookUp(A_GABE_V_USUARIO,EMAIL_USUARIO = VGB_USUARIO_LOGADO_EMAIL && IND_INATIVO = false,ID_USUARIO)),
+            Set(VGB_USUARIO_LOGADO_PERFIL,LookUp(A_GABE_V_USUARIO,EMAIL_USUARIO = VGB_USUARIO_LOGADO_EMAIL && IND_INATIVO = false)),
+            Set(VGB_VERSAO,"1.0.0"),
+            Set(VGB_DESCRICAO_PRODUTO,"GABE")
+        );
+        ClearCollect(CLC_PERIODO,Filter(AA_D_PERIODO,IND_ATIVO = true));
+        ClearCollect(
+            CLC_MES,
+            Table(
+                {ID_MES: 01, MES: "Janeiro"},
+                {ID_MES: 02, MES: "Fevereiro"},
+                {ID_MES: 03, MES: "Março"},
+                {ID_MES: 04, MES: "Abril"},
+                {ID_MES: 05, MES: "Maio"},
+                {ID_MES: 06, MES: "Junho"},
+                {ID_MES: 07, MES: "Julho"},
+                {ID_MES: 08, MES: "Agosto"},
+                {ID_MES: 09, MES: "Setembro"},
+                {ID_MES: 10, MES: "Outubro"},
+                {ID_MES: 11, MES: "Novembro"},
+                {ID_MES: 12, MES: "Dezembro"}
+            )
+        );
+        Collect(
+            CLC_ANO,
+        Table(
+                {Value: Year(Now())},
+                {Value: Year(Now()) + 1},
+                {Value: Year(Now()) + 2},
+                {Value: Year(Now()) + 3}
+            )
+        );
+        //Verifica a versão
+        Refresh(A_AA_D_MANUTENCAO);
+        ClearCollect(CLC_A_AA_D_MANUTENCAO,LookUp(A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO));
+        If(Trim(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).VERSAO) = VGB_VERSAO,Set(VGB_POPUP_VERSAO, false),Set(VGB_POPUP_VERSAO, true));
+        //Verifica o status manutenção/atualização
+        If(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).IND_STATUS > 0,Set(VGB_POPUP_MANUTENCAO, true),Set(VGB_POPUP_MANUTENCAO, false));
+        //Registro de log
+        Patch(A_AA_LOG_ACESSO,{NOM_PRODUTO: VGB_DESCRICAO_PRODUTO,EMAIL_USUARIO:UsuáriosdoOffice365.MyProfile().Mail,DT_HR_REFERENCIA:Now()})
+    Theme: =PowerAppsTheme
+
+    Host As hostControl.DefaultHostControlVariant:
+        OnCancel: =false
+        OnEdit: =false
+        OnNew: =false
+        OnSave: =false
+        OnView: =false
+

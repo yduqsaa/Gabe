@@ -1,0 +1,9 @@
+[
+  {
+    "IsComponentScoped": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "Name": "CLC_SS_STATUS_FLUXO",
+    "Type": "CollectionDataSourceInfo"
+  }
+]

@@ -1,0 +1,958 @@
+USUARIO As screen:
+    BackgroundImage: =FUNDO_YDUQS
+    ImagePosition: =ImagePosition.Fill
+    OnVisible: |-
+        =Refresh(A_GABE_V_USUARIO);
+        Select(US_FUNCAO_VERSAO_MANUTENCAO)
+
+    US_COMP_TITULO As COMP_TITULO:
+        VAR_NOME_PAGINA: ="Usuários"
+        VAR_ONSELECT_INICIO: =INICIO
+        VAR_ONSELECT_VOLTAR: =INICIO
+
+    US_CT_FUNDO As groupContainer.manualLayoutContainer:
+        BorderStyle: =BorderStyle.None
+        Fill: =RGBA(237, 237, 237, 0.9)
+        Height: =638
+        RadiusBottomLeft: =10
+        RadiusBottomRight: =10
+        RadiusTopLeft: =10
+        RadiusTopRight: =10
+        Width: =1323
+        X: =22
+        Y: =65
+        ZIndex: =2
+
+        "US_GALL As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+            BorderStyle: =BorderStyle.None
+            Height: =461
+            Items: |-
+                =Search(
+                    Filter(
+                        A_GABE_V_USUARIO,
+                        ID_USUARIO_TIPO = US_FILTRO_CB_TIPO.Selected.ID_USUARIO_TIPO || US_FILTRO_CB_TIPO.Selected.ID_USUARIO_TIPO = Blank()
+                    ),
+                    US_FILTRO_EMAIL.Text,
+                    "EMAIL_USUARIO"
+                )
+            Layout: =Layout.Vertical
+            NavigationStep: =5
+            ShowNavigation: =true
+            ShowScrollbar: =false
+            TemplatePadding: =10
+            TemplateSize: =50
+            Width: =1323
+            Y: =169
+            ZIndex: =4
+
+            US_GALL_FUNDO As button:
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(39, 67, 125, 0.15)
+                Height: =50
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: =""
+                Width: =1303
+                ZIndex: =1
+
+            US_GALL_ID As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.ID_USUARIO
+                Width: =66
+                X: =30
+                ZIndex: =3
+
+            US_GALL_EMAIL As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.EMAIL_USUARIO
+                Width: =317
+                X: =96
+                ZIndex: =4
+
+            US_GALL_FUNDO_STATUS As button:
+                DisplayMode: =DisplayMode.View
+                Fill: |-
+                    =Switch(
+                        ThisItem.IND_INATIVO, 
+                        true, RGBA(221, 75, 57, 1),
+                        RGBA(118,161,58,1)
+                    )
+                Height: =50
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: =""
+                Width: =30
+                ZIndex: =17
+
+            US_GALL_ACESSO As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.NOM_USUARIO_AREA
+                Width: =232
+                X: =614
+                ZIndex: =18
+
+            US_GALL_OBS As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: |-
+                    =ThisItem.EMAIL_ACESSO&"
+                    "&ThisItem.DT_HR_ACESSO
+                Width: =319
+                X: =846
+                ZIndex: =23
+
+            US_GALL_BTN_VIUALIZAR As icon.Add:
+                Color: =RGBA(25, 43, 75, 1)
+                DisabledColor: =RGBA(255, 255, 255, 1)
+                DisplayMode: =If(ThisItem.EMAIL_USUARIO <> VGB_USUARIO_LOGADO_EMAIL,DisplayMode.Edit,DisplayMode.Disabled)
+                Height: =35
+                Icon: =Icon.NextArrow
+                OnSelect: |-
+                    =UpdateContext({VLC_LOADING: true});
+                    UpdateContext(
+                        {
+                            VLC_US_POPUP_USUARIO: true,
+                            VLC_US_TP_FORM: "EDIT",
+                            VLC_US_NOM_USUARIO_TIPO: ThisItem.NOM_USUARIO_TIPO,
+                            VLC_US_NOM_USUARIO_AREA: ThisItem.NOM_USUARIO_AREA   
+                        }
+                    );
+                    ResetForm(US_POPUP_USUARIO_FORM);
+                    UpdateContext({VLC_LOADING: false})
+                Tooltip: ="Selecionar"
+                Width: =35
+                X: =1255
+                Y: =7
+                ZIndex: =25
+
+            US_GALL_POLO As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.NOM_USUARIO_TIPO
+                Width: =201
+                X: =413
+                ZIndex: =26
+
+            US_GALL_BTN_ATIVAR_DESATIVAR As icon.Add:
+                Color: =US_GALL_FUNDO_STATUS.Fill
+                DisabledColor: =RGBA(255, 255, 255, 1)
+                DisplayMode: |-
+                    =If(
+                        ThisItem.EMAIL_USUARIO <> VGB_USUARIO_LOGADO_EMAIL,
+                        DisplayMode.Edit,
+                        DisplayMode.Disabled
+                    )
+                Height: =35
+                Icon: |-
+                    =If(
+                        ThisItem.IND_INATIVO = true,
+                        Icon.Blocked,
+                        Icon.CheckBadge
+                    )
+                OnSelect: |-
+                    =UpdateContext({VLC_LOADING: true});
+                    Patch(
+                        A_GABE_D_USUARIO,
+                        LookUp(
+                            A_GABE_D_USUARIO,
+                            ID_USUARIO = ThisItem.ID_USUARIO
+                        ),
+                        {
+                            IND_INATIVO: If(
+                                ThisItem.IND_INATIVO = true,
+                                false,
+                                true
+                            ),
+                            EMAIL_INATIVO: VGB_USUARIO_LOGADO_EMAIL,
+                            DT_HR_INATIVO: Now()
+                        }
+                    );
+                    Patch(
+                        A_GABE_D_USUARIO_AD,Defaults(A_GABE_D_USUARIO_AD),
+                        {
+                            EMAIL: ThisItem.EMAIL_USUARIO,
+                            EMAIL_SOLICITANTE: VGB_USUARIO_LOGADO_EMAIL,
+                            DT_REFERENCIA: Now(),
+                            IND_INCLUIR: ThisItem.IND_INATIVO,
+                            IND_EXECUTADO: false
+                        }
+                    );
+                    Notify("Usuário "&If(ThisItem.IND_INATIVO = true,"ativado","desativado")&" !",NotificationType.Success,3000);
+                    Refresh(A_GABE_V_USUARIO);
+                    UpdateContext({VLC_LOADING: false})
+                Tooltip: |-
+                    =If(
+                        ThisItem.IND_INATIVO = true,
+                        "Status atual: Desativado / Clique para alterar",
+                        "Status atual: Ativo / Clique para alterar"
+                    )
+                Width: =35
+                X: =1196
+                Y: =7
+                ZIndex: =27
+
+        US_FILTRO As groupContainer.manualLayoutContainer:
+            BorderStyle: =BorderStyle.None
+            Height: =111
+            Width: =1296
+            X: =14
+            Y: =13
+            ZIndex: =5
+
+            US_FILTRO_FUNDO As button:
+                BorderThickness: =1
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(39, 67, 125, 0.15)
+                Height: =111
+                Text: =""
+                Width: =1296
+                ZIndex: =1
+
+            US_FILTRO_EMAIL As text:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Default: =""
+                HintText: ="Email"
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Width: =295
+                X: =28
+                Y: =42
+                ZIndex: =2
+
+            US_FILTRO_EMAIL_TITULO As label:
+                FontWeight: =FontWeight.Bold
+                Height: =35
+                PaddingLeft: =0
+                Text: ="Email"
+                Width: =106
+                X: =28
+                Y: =7
+                ZIndex: =3
+
+            US_FILTRO_CB_TIPO_TITULO As label:
+                FontWeight: =FontWeight.Bold
+                Height: =35
+                PaddingLeft: =0
+                Text: ="Tipo "
+                Width: =250
+                X: =352
+                Y: =7
+                ZIndex: =5
+
+            US_FILTRO_CB_TIPO As combobox:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                ChevronBackground: =RGBA(39, 67, 125, 1)
+                DisplayFields: =["NOM_USUARIO_TIPO"]
+                InputTextPlaceholder: ="Tipo acesso"
+                IsSearchable: =false
+                Items: |-
+                    =Sort(
+                        A_GABE_D_USUARIO_TIPO,
+                        NOM_USUARIO_TIPO,
+                        SortOrder.Ascending
+                    )
+                SearchFields: =["NOM_USUARIO_TIPO"]
+                SearchItems: =[]
+                SelectMultiple: =false
+                Width: =250
+                X: =352
+                Y: =42
+                ZIndex: =6
+
+            US_FILTRO_BTN_NOVO As button:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Fill: =RGBA(39, 67, 125, 1)
+                OnSelect: |-
+                    =UpdateContext(
+                        {
+                            VLC_US_POPUP_USUARIO: true,
+                            VLC_US_TP_FORM: "NEW"
+                        }
+                    );
+                    ResetForm(US_POPUP_USUARIO_FORM)
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: ="Novo usuário"
+                X: =1103
+                Y: =35
+                ZIndex: =9
+
+        US_GALL_ID_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =12
+            Text: ="ID"
+            Width: =66
+            X: =41
+            Y: =134
+            ZIndex: =6
+
+        US_GALL_EMAIL_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =12
+            Text: ="Email"
+            Width: =317
+            X: =107
+            Y: =134
+            ZIndex: =7
+
+        US_GALL_DESCRICAO_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =12
+            Text: ="Área"
+            Width: =232
+            X: =625
+            Y: =134
+            ZIndex: =8
+
+        US_GALL_ACESSO_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =12
+            Text: ="Acesso"
+            Width: =319
+            X: =857
+            Y: =134
+            ZIndex: =9
+
+        US_GALL_TIPO_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =12
+            Text: ="Tipo"
+            Width: =201
+            X: =424
+            Y: =134
+            ZIndex: =11
+
+        US_GALL_STATUS_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =12
+            Text: ="Status atual"
+            Width: =100
+            X: =1173
+            Y: =134
+            ZIndex: =12
+
+        US_GALL_LB_AVISO_S_REGISTRO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =12
+            Text: ="Sem registros"
+            Visible: |-
+                =If(
+                    CountRows(US_GALL.AllItems) > 0,
+                    false,
+                    true
+                )
+            Width: =1323
+            Y: =362
+            ZIndex: =13
+
+    US_POPUP_USUARIO As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =768
+        Visible: =VLC_US_POPUP_USUARIO
+        Width: =1366
+        ZIndex: =3
+
+        US_POPUP_USUARIO_fundo As button:
+            BorderThickness: =1
+            Color: =RGBA(0, 0, 0, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(237, 237, 237, 1)
+            Height: =387
+            PaddingLeft: =0
+            PaddingTop: =0
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: =
+            Width: =702
+            X: =332
+            Y: =191
+            ZIndex: =1
+
+        US_POPUP_USUARIO_TITULO As button:
+            BorderThickness: =1
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(0, 28, 67, 1)
+            Height: =50
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =16
+            Text: |-
+                =If(
+                    VLC_US_TP_FORM = "NEW",
+                    "Cadastro usuário",
+                    "Editar usuário"
+                )
+            Width: =702
+            X: =332
+            Y: =191
+            ZIndex: =2
+
+        US_POPUP_USUARIO_BTN_FECHAR As icon.CancelBadge:
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =35
+            Icon: =Icon.CancelBadge
+            OnSelect: |-
+                =UpdateContext({VLC_US_POPUP_USUARIO:false})
+            Visible: =true//vPPConfirmaBolsa
+            Width: =35
+            X: =988
+            Y: =198
+            ZIndex: =3
+
+        US_POPUP_USUARIO_BTN_CONFIRMAR As button:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            DisplayMode: |-
+                =If(
+                    US_POPUP_USUARIO_FORM.Valid,
+                    DisplayMode.Edit,
+                    DisplayMode.Disabled
+                )
+            Fill: =RGBA(0, 166, 90, 1)
+            OnSelect: |-
+                =UpdateContext({VLC_LOADING: true});
+                If(
+                    VLC_US_TP_FORM = "NEW",
+                    If(
+                        !IsBlank(
+                            LookUp(
+                                A_GABE_D_USUARIO,
+                                EMAIL_USUARIO = US_POPUP_USUARIO_FORM_EMAIL_DATACARD.Update
+                            ).EMAIL_USUARIO
+                        ),
+                        Notify(
+                            "Usuário já cadastrado !",
+                            NotificationType.Warning,
+                            3000
+                        ),
+                        UpdateContext({VLC_US_POPUP_USUARIO_CONF: true})
+                    ),
+                    UpdateContext({VLC_US_POPUP_USUARIO_CONF: true})
+                );
+                UpdateContext({VLC_LOADING: false})
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Confirmar"
+            X: =848
+            Y: =515
+            ZIndex: =4
+
+        US_POPUP_USUARIO_BTN_CANCELAR As button:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            Fill: =RGBA(220, 53, 69, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Select(US_POPUP_USUARIO_BTN_FECHAR)
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Cancelar"
+            X: =675
+            Y: =515
+            ZIndex: =5
+
+        US_POPUP_USUARIO_FORM As form:
+            DataSource: =A_GABE_D_USUARIO
+            DefaultMode: |-
+                =If(
+                    VLC_US_TP_FORM = "EDIT",
+                    FormMode.Edit,
+                    FormMode.New
+                )
+            Height: =221
+            Item: =LookUp(A_GABE_D_USUARIO,ID_USUARIO = US_GALL.Selected.ID_USUARIO)
+            SnapToColumns: =false
+            Width: =702
+            X: =332
+            Y: =265
+            ZIndex: =6
+
+            US_POPUP_USUARIO_FORM_EMAIL_DATACARD As typedDataCard.textualEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="EMAIL"
+                Default: =ThisItem.EMAIL_USUARIO
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: ="Email"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                MaxLength: =DataSourceInfo([@A_GABE_D_USUARIO], DataSourceInfo.MaxLength, "EMAIL_USUARIO")
+                Required: |-
+                    =If(
+                        VLC_US_TP_FORM = "EDIT",
+                        false,
+                        true
+                    )
+                Update: =US_POPUP_USUARIO_FORM_EMAIL_DATACARD_VALUE.Selected.Mail
+                Width: =696
+                X: =0
+                Y: =0
+                ZIndex: =1
+
+                US_POPUP_USUARIO_FORM_EMAIL_DATACARD_TITULO As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                ErrorMessage2_1 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =US_POPUP_USUARIO_FORM_EMAIL_DATACARD_VALUE.Y + US_POPUP_USUARIO_FORM_EMAIL_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible2_1 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =US_POPUP_USUARIO_FORM_EMAIL_DATACARD_TITULO.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =US_POPUP_USUARIO_FORM_EMAIL_DATACARD_TITULO.Y
+                    ZIndex: =4
+
+                US_POPUP_USUARIO_FORM_EMAIL_DATACARD_VALUE As combobox:
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    ChevronBackground: =RGBA(39, 67, 125, 1)
+                    DefaultSelectedItems: =
+                    DisplayFields: =["DisplayName","JobTitle"]
+                    DisplayMode: |-
+                        =If(
+                            VLC_US_TP_FORM = "EDIT",
+                            DisplayMode.Disabled,
+                            DisplayMode.Edit
+                        )
+                    InputTextPlaceholder: =""
+                    Items: |-
+                        =UsuáriosdoOffice365.SearchUser({searchTerm:Self.SearchText,top: 10})
+                    NoSelectionText: =
+                    SearchFields: =["DisplayName"]
+                    SearchItems: |-
+                        =Search(UsuáriosdoOffice365.SearchUser({searchTerm:Self.SearchText,top: 10}),US_POPUP_USUARIO_FORM_EMAIL_DATACARD_VALUE.SearchText,"DisplayName")
+                    SelectMultiple: =false
+                    Size: =10
+                    Template: =ListItemTemplate.Double
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =44
+                    ZIndex: =5
+
+                US_POPUP_USUARIO_FORM_EMAIL_DATACARD_TXT As label:
+                    Size: =10
+                    Text: =ThisItem.EMAIL_USUARIO
+                    Visible: |-
+                        =If(
+                            VLC_US_TP_FORM = "EDIT",
+                            true,
+                            false
+                        )
+                    Width: =601
+                    X: =30
+                    Y: =44
+                    ZIndex: =6
+
+            US_POPUP_USUARIO_FORM_COD_TIPO_DATACARD As typedDataCard.numberEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="COD_TIPO_USER"
+                Default: =ThisItem.ID_USUARIO_TIPO
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: ="Tipo usuário"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =true
+                Update: =US_POPUP_USUARIO_FORM_COD_TIPO_DATACARD_VALUE.Selected.ID_USUARIO_TIPO
+                Width: =348
+                X: =1
+                Y: =0
+                ZIndex: =1
+
+                US_POPUP_USUARIO_FORM_COD_TIPO_USER_DATACARD_TITULO As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                ErrorMessage3_1 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =US_POPUP_USUARIO_FORM_COD_TIPO_DATACARD_VALUE.Y + US_POPUP_USUARIO_FORM_COD_TIPO_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible3_1 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =US_POPUP_USUARIO_FORM_COD_TIPO_USER_DATACARD_TITULO.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =US_POPUP_USUARIO_FORM_COD_TIPO_USER_DATACARD_TITULO.Y
+                    ZIndex: =4
+
+                US_POPUP_USUARIO_FORM_COD_TIPO_DATACARD_VALUE As dropdown:
+                    AllowEmptySelection: =true
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    ChevronBackground: =RGBA(39, 67, 125, 1)
+                    Default: |-
+                        =If(
+                            VLC_US_TP_FORM = "EDIT",
+                            VLC_US_NOM_USUARIO_TIPO,
+                            Blank()
+                        )
+                    Items: |-
+                        =Sort(
+                            A_GABE_D_USUARIO_TIPO,
+                            NOM_USUARIO_TIPO,
+                            SortOrder.Ascending
+                        )
+                    Size: =10
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =US_POPUP_USUARIO_FORM_COD_TIPO_USER_DATACARD_TITULO.Y + US_POPUP_USUARIO_FORM_COD_TIPO_USER_DATACARD_TITULO.Height + 5
+                    ZIndex: =6
+
+            US_POPUP_USUARIO_FORM_ID_USUARIO_AREA_DATACARD As typedDataCard.numberEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="ID_USUARIO_AREA"
+                Default: =ThisItem.ID_USUARIO_AREA
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: ="Área"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =true
+                Update: =Value(US_POPUP_USUARIO_FORM_ID_USUARIO_AREA_DATACARD_VALUE.Selected.ID_USUARIO_AREA)
+                Width: =348
+                X: =2
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey17 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                ErrorMessage13 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =US_POPUP_USUARIO_FORM_ID_USUARIO_AREA_DATACARD_VALUE.Y + US_POPUP_USUARIO_FORM_ID_USUARIO_AREA_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible13 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey17.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey17.Y
+                    ZIndex: =4
+
+                US_POPUP_USUARIO_FORM_ID_USUARIO_AREA_DATACARD_VALUE As dropdown:
+                    AllowEmptySelection: =true
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    ChevronBackground: =RGBA(39, 67, 125, 1)
+                    Default: |-
+                        =If(
+                            VLC_US_TP_FORM = "EDIT",
+                            VLC_US_NOM_USUARIO_AREA,
+                            Blank()
+                        )
+                    Items: |-
+                        =Sort(
+                            A_GABE_D_USUARIO_AREA,
+                            NOM_USUARIO_AREA,
+                            SortOrder.Ascending
+                        )
+                    Size: =10
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey17.Y + DataCardKey17.Height + 5
+                    ZIndex: =5
+
+        US_POPUP_USUARIO_CONF As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(0, 0, 0, 0.5)
+            Height: =768
+            Visible: =VLC_US_POPUP_USUARIO_CONF
+            Width: =1366
+            ZIndex: =9
+
+            US_POPUP_USUARIO_CONF_DESCRICAO As button:
+                BorderThickness: =1
+                Color: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(237, 237, 237, 1)
+                Height: =241
+                PaddingLeft: =0
+                PaddingTop: =0
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: ="Deseja realmente salvar registro ?"
+                Width: =576
+                X: =395
+                Y: =264
+                ZIndex: =1
+
+            US_POPUP_USUARIO_CONF_BTN_SIM As button:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Fill: =RGBA(0, 166, 90, 1)
+                FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =UpdateContext({VLC_LOADING: true});
+                        If(
+                            VLC_US_TP_FORM = "EDIT",
+                            Patch(
+                                A_GABE_D_USUARIO,
+                                LookUp(A_GABE_D_USUARIO,ID_USUARIO = US_GALL.Selected.ID_USUARIO),
+                                {
+                                    ID_USUARIO_TIPO: US_POPUP_USUARIO_FORM_COD_TIPO_DATACARD.Update,
+                                    ID_USUARIO_AREA: US_POPUP_USUARIO_FORM_ID_USUARIO_AREA_DATACARD.Update,
+                                    EMAIL_ALTERACAO: VGB_USUARIO_LOGADO_EMAIL,
+                                    DT_HR_ALTERACAO: Now()
+                                }
+                            ),
+                            Patch(
+                                A_GABE_D_USUARIO,
+                                Defaults(A_GABE_D_USUARIO),
+                                {
+                                    EMAIL_USUARIO: US_POPUP_USUARIO_FORM_EMAIL_DATACARD.Update,
+                                    ID_USUARIO_TIPO: US_POPUP_USUARIO_FORM_COD_TIPO_DATACARD.Update,
+                                    ID_USUARIO_AREA: US_POPUP_USUARIO_FORM_ID_USUARIO_AREA_DATACARD.Update,
+                                    EMAIL_ACESSO: VGB_USUARIO_LOGADO_EMAIL,
+                                    DT_HR_ACESSO: Now(),
+                                    IND_INATIVO: false
+                                }
+                            )
+                    );
+                    If(
+                        !IsEmpty(Errors(A_GABE_D_USUARIO)),
+                        Notify("Ocorreu um erro, tente novamente !",NotificationType.Error,3000),
+                        If(
+                            VLC_US_TP_FORM = "NEW",
+                            Patch(
+                                A_GABE_D_USUARIO_AD,Defaults(A_GABE_D_USUARIO_AD),
+                                {
+                                    EMAIL: US_POPUP_USUARIO_FORM_EMAIL_DATACARD.Update,
+                                    EMAIL_SOLICITANTE: VGB_USUARIO_LOGADO_EMAIL,
+                                    DT_REFERENCIA: Now(),
+                                    IND_INCLUIR: true,
+                                    IND_EXECUTADO: false
+                                }
+                            )
+                        );
+                        Notify("Registro salvo com suscesso.",NotificationType.Success,3000)
+                    );
+                    Refresh(A_GABE_V_USUARIO);
+                    Select(US_POPUP_USUARIO_CONF_BTN_FECHAR);
+                    Select(US_POPUP_USUARIO_BTN_FECHAR);
+                    UpdateContext({VLC_LOADING: false})
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: ="Sim"
+                Visible: =true//vPPConfirmaBolsa
+                X: =510
+                Y: =435
+                ZIndex: =2
+
+            US_POPUP_USUARIO_CONF_BTN_NAO As button:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Fill: =RGBA(221, 75, 57, 1)
+                FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: =Select(US_POPUP_USUARIO_CONF_BTN_FECHAR)
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: ="Não"
+                Visible: =true//vPPConfirmaBolsa
+                X: =695
+                Y: =435
+                ZIndex: =3
+
+            US_POPUP_USUARIO_CONF_TITULO As button:
+                BorderThickness: =1
+                DisabledColor: =RGBA(255, 255, 255, 1)
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(0, 28, 67, 1)
+                Height: =50
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Size: =16
+                Text: ="Confirmação"
+                Width: =576
+                X: =395
+                Y: =264
+                ZIndex: =4
+
+            US_POPUP_USUARIO_CONF_BTN_FECHAR As icon.CancelBadge:
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =35
+                Icon: =Icon.CancelBadge
+                OnSelect: |-
+                    =UpdateContext({VLC_US_POPUP_USUARIO_CONF: false})
+                Visible: =true//vPPConfirmaBolsa
+                Width: =35
+                X: =921
+                Y: =271
+                ZIndex: =5
+
+    US_COMP_LOADING As COMP_LOADING:
+        Visible: =VLC_LOADING
+        ZIndex: =4
+
+    US_FUNCAO_VERSAO_MANUTENCAO As button:
+        BorderStyle: =BorderStyle.None
+        BorderThickness: =0
+        Height: =30
+        OnSelect: |-
+            =UpdateContext({VLC_LOADING: true});
+            //Verifica a versão
+            Refresh(A_AA_D_MANUTENCAO);
+            ClearCollect(CLC_A_AA_D_MANUTENCAO,LookUp(A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO));
+            If(Trim(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).VERSAO) = VGB_VERSAO,Set(VGB_POPUP_VERSAO, false),Set(VGB_POPUP_VERSAO, true));
+            //Verifica o status manutenção/atualização
+            If(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).IND_STATUS > 0,Set(VGB_POPUP_MANUTENCAO, true),Set(VGB_POPUP_MANUTENCAO, false));
+            UpdateContext({VLC_LOADING: false})
+        Text: ="FUNCAO_VERSAO_MANUTENCAO"
+        Visible: =false
+        Width: =331
+        X: =568
+        Y: =10
+        ZIndex: =5
+
+    US_COMP_MANUTENCAO As COMP_MANUTENCAO:
+        VAR_DESCRICAO: |-
+            =Switch(
+                First(CLC_A_AA_D_MANUTENCAO).IND_STATUS,
+                1,"Sistema em manutenção",
+                2,"Sistema em atualização"
+            )
+        VAR_DESCRICAO_STATUS: =First(CLC_A_AA_D_MANUTENCAO).DESCRICAO_STATUS
+        Visible: =VGB_POPUP_MANUTENCAO
+        ZIndex: =6
+
+    US_COMP_VERSAO As COMP_VERSAO:
+        Visible: =VGB_POPUP_VERSAO
+        ZIndex: =7
+

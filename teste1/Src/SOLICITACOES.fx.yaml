@@ -1,0 +1,1590 @@
+SOLICITACOES As screen:
+    BackgroundImage: =FUNDO_YDUQS
+    ImagePosition: =ImagePosition.Stretch
+    OnVisible: |-
+        =Refresh(A_GABE_V_SOLICITACAO);
+        Select(SS_FUNCAO_VERSAO_MANUTENCAO)
+
+    SS_COMP_TITULO As COMP_TITULO:
+        VAR_NOME_PAGINA: ="Solicitações"
+        VAR_ONSELECT_INICIO: =INICIO
+        VAR_ONSELECT_VOLTAR: =INICIO
+
+    SS_CT_FUNDO As groupContainer.manualLayoutContainer:
+        BorderStyle: =BorderStyle.None
+        Fill: =RGBA(237, 237, 237, 0.9)
+        Height: =638
+        RadiusBottomLeft: =10
+        RadiusBottomRight: =10
+        RadiusTopLeft: =10
+        RadiusTopRight: =10
+        Width: =1323
+        X: =22
+        Y: =65
+        ZIndex: =2
+
+        "SS_CT_FUNDO_GALL As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+            BorderStyle: =BorderStyle.None
+            Height: =473
+            Items: |-
+                =If(
+                    VGB_USUARIO_LOGADO_PERFIL.NOM_USUARIO_TIPO in 
+                        [
+                            "Remuneração e Benefícios - Gestão",
+                            "Remuneração e Benefícios - Solicitante"
+                        ],
+                    Sort(
+                        Filter(
+                            A_GABE_V_SOLICITACAO,
+                            (COD_MATRICULA = Int(SS_CT_FUNDO_FILTRO_MATRICULA.Text) || 
+                             LOTE = Int(SS_CT_FUNDO_FILTRO_MATRICULA.Text) || 
+                             Int(SS_CT_FUNDO_FILTRO_MATRICULA.Text) = Blank()) && 
+                            (STATUS_FLUXO = SS_CT_FUNDO_FILTRO_CB_STATUS_FLUXO.Selected.Value || SS_CT_FUNDO_FILTRO_CB_STATUS_FLUXO.Selected.Value = Blank()) && 
+                            (STATUS_BOLSA = SS_CT_FUNDO_FILTRO_CB_STATUS_BOLSA.Selected.Value || SS_CT_FUNDO_FILTRO_CB_STATUS_BOLSA.Selected.Value = Blank())
+                        ),ID_SOLICITACAO,SortOrder.Descending),
+                    Sort(
+                        Filter(
+                            A_GABE_V_SOLICITACAO,
+                            (COD_MATRICULA = Int(SS_CT_FUNDO_FILTRO_MATRICULA.Text) || 
+                             LOTE = Int(SS_CT_FUNDO_FILTRO_MATRICULA.Text) || 
+                             Int(SS_CT_FUNDO_FILTRO_MATRICULA.Text) = Blank()) && 
+                            (STATUS_FLUXO = SS_CT_FUNDO_FILTRO_CB_STATUS_FLUXO.Selected.Value || SS_CT_FUNDO_FILTRO_CB_STATUS_FLUXO.Selected.Value = Blank()) && 
+                            (STATUS_BOLSA = SS_CT_FUNDO_FILTRO_CB_STATUS_BOLSA.Selected.Value || SS_CT_FUNDO_FILTRO_CB_STATUS_BOLSA.Selected.Value = Blank()) &&
+                            EMAIL_USUARIO = VGB_USUARIO_LOGADO_EMAIL
+                        ),ID_SOLICITACAO,SortOrder.Descending)
+                    )
+            Layout: =Layout.Vertical
+            NavigationStep: =5
+            ShowNavigation: =true
+            ShowScrollbar: =false
+            TemplatePadding: =10
+            TemplateSize: =50
+            Width: =1323
+            Y: =165
+            ZIndex: =1
+
+            SS_CT_FUNDO_GALL_FUNDO As button:
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(39, 67, 125, 0.15)
+                Height: =50
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: =""
+                Width: =1303
+                ZIndex: =1
+
+            SS_CT_FUNDO_GALL_STATUS_FINAL_BOLSA As label:
+                Align: =Align.Center
+                Color: =SS_CT_FUNDO_GALL_FUNDO_STATUS.Fill
+                FontWeight: =FontWeight.Bold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.STATUS_FLUXO
+                Tooltip: =ThisItem.STATUS_FLUXO
+                Width: =113
+                X: =937
+                ZIndex: =2
+
+            SS_CT_FUNDO_GALL_COD_MATRICULA As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: |-
+                    =ThisItem.COD_MATRICULA&"
+                    "&ThisItem.LOTE
+                Width: =116
+                X: =30
+                ZIndex: =3
+
+            SS_CT_FUNDO_GALL_NOM_ALUNO As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.NOM_ALUNO
+                Width: =356
+                X: =146
+                ZIndex: =4
+
+            SS_CT_FUNDO_GALL_FUNDO_STATUS As button:
+                DisplayMode: =DisplayMode.View
+                Fill: |-
+                    =Switch(
+                        ThisItem.STATUS_FLUXO,
+                        "APROVADA", RGBA(118,161,58,1),
+                        "REPROVADA",RGBA(221, 75, 57, 1),
+                        RGBA(62,138,176,1)
+                    )
+                Height: =50
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: =""
+                Tooltip: =Proper(ThisItem.STATUS_FLUXO)
+                Width: =30
+                ZIndex: =17
+
+            SS_CT_FUNDO_GALL_PCT As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.PCT&"%"
+                Width: =50
+                X: =887
+                ZIndex: =22
+
+            SS_CT_FUNDO_GALL_DT_INICIO_FIM As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: |-
+                    =Right(ThisItem.DT_INICIO,7)&"
+                    "&Right(ThisItem.DT_FIM,7)
+                Width: =94
+                X: =793
+                ZIndex: =23
+
+            SS_CT_FUNDO_GALL_SOLICITACAO As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: |-
+                    =Text(ThisItem.DT_REFERENCIA)&"
+                    "&
+                    If(
+                        ThisItem.IND_STATUS_APROVADOR_N1 = "N",
+                        Text(ThisItem.DT_REFERENCIA_APROVADOR_N2),"-"
+                    )
+                Width: =200
+                X: =1050
+                ZIndex: =24
+
+            SS_CT_FUNDO_GALL_BTN_VIUALIZAR As icon.Add:
+                Color: =RGBA(25, 43, 75, 1)
+                DisabledColor: =RGBA(255, 255, 255, 1)
+                Height: =35
+                Icon: =Icon.View
+                OnSelect: |-
+                    =UpdateContext(
+                        {
+                            VLC_SS_POPUP_APROVAR: true,
+                            VLC_SS_ID_SOLICITACAO: ThisItem.ID_SOLICITACAO,
+                            VLC_SS_IND_STATUS: ThisItem.IND_STATUS_APROVADOR_N1,
+                            VLC_SS_NOM_USUARIO_TIPO_N1: ThisItem.NOM_USUARIO_TIPO_N1
+                        }
+                    );
+                    ClearCollect(CLC_SS_STATUS_FLUXO,
+                        If(
+                            IsBlank(VLC_SS_IND_STATUS),
+                            Sort(
+                                Table(
+                                    {
+                                        STATUS_FLUXO: "EM APROVAÇÃO",
+                                        EMAIL_USUARIO_APROVADOR: Blank(),
+                                        DT_REFERENCIA: Blank(),
+                                        OBS: Blank(),
+                                        NOM_USUARIO_TIPO: VLC_SS_NOM_USUARIO_TIPO_N1
+                                    }
+                                ),
+                                DT_REFERENCIA,
+                                SortOrder.Descending
+                            ),
+                            ShowColumns(
+                                AddColumns(
+                                    Filter(
+                                        A_GABE_V_FLUXO_STATUS,
+                                        ID_SOLICITACAO = VLC_SS_ID_SOLICITACAO
+                                    ),
+                                    "NOM_USUARIO_TIPO",
+                                    If(
+                                        IsBlank(NOM_USUARIO_TIPO_APROVADOR),
+                                        Proper(UsuáriosdoOffice365.UserProfileV2(EMAIL_USUARIO_APROVADOR).jobTitle),
+                                        NOM_USUARIO_TIPO_APROVADOR
+                                    )
+                                ),
+                                "STATUS_FLUXO",
+                                "EMAIL_USUARIO_APROVADOR",
+                                "DT_REFERENCIA",
+                                "OBS",
+                                "NOM_USUARIO_TIPO"
+                            )
+                        )
+                    );
+                    Refresh(A_GABE_V_FLUXO)
+                Tooltip: ="Selecionar"
+                Width: =35
+                X: =1250
+                Y: =7
+                ZIndex: =25
+
+            SS_CT_FUNDO_GALL_IND_CURSO_TODO As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =If(ThisItem.IND_CURSO_TODO = true,"S","N")
+                Width: =91
+                X: =702
+                ZIndex: =27
+
+            SS_CT_FUNDO_GALL_MARCA_DIRETORIA As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =8
+                Text: |-
+                    =ThisItem.NOM_MARCA&"
+                    "&ThisItem.NOM_DIRETORIA
+                Width: =200
+                X: =502
+                ZIndex: =28
+
+        SS_CT_FUNDO_FILTRO As groupContainer.manualLayoutContainer:
+            BorderStyle: =BorderStyle.None
+            Fill: =RGBA(39, 67, 125, 0.14)
+            Height: =111
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            Width: =1296
+            X: =15
+            Y: =15
+            ZIndex: =2
+
+            SS_CT_FUNDO_FILTRO_MATRICULA As text:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Default: =""
+                Format: =TextFormat.Number
+                HintText: =""
+                MaxLength: =50
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =9
+                Width: =268
+                X: =28
+                Y: =42
+                ZIndex: =2
+
+            SS_CT_FUNDO_FILTRO_MATRICULA_TITULO As label:
+                FontWeight: =FontWeight.Bold
+                Height: =35
+                PaddingLeft: =0
+                Text: ="Matrícula SIA - Inscrição / Lote"
+                Width: =268
+                X: =28
+                Y: =7
+                ZIndex: =3
+
+            SS_CT_FUNDO_FILTRO_CB_STATUS_BOLSA As combobox:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                ChevronBackground: =RGBA(39, 67, 125, 1)
+                DisplayFields: =["Value"]
+                InputTextPlaceholder: =""
+                IsSearchable: =false
+                Items: |-
+                    =[
+                        "LANÇADA",
+                        "NÃO LANÇADA",
+                        "AGUARDANDO LANÇAMENTO",
+                        "AGUARDANDO ABERTURA DE CHAMADO"
+                    ]
+                SearchFields: =["Value"]
+                SearchItems: =[]
+                SelectMultiple: =false
+                Size: =9
+                Width: =298
+                X: =513
+                Y: =42
+                ZIndex: =13
+
+            SS_CT_FUNDO_FILTRO_CB_STATUS_BOLSA_TITULO As label:
+                FontWeight: =FontWeight.Bold
+                Height: =35
+                PaddingLeft: =0
+                Text: ="Status bolsa"
+                Width: =298
+                X: =513
+                Y: =7
+                ZIndex: =14
+
+            SS_CT_FUNDO_FILTRO_CB_STATUS_FLUXO As combobox:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                ChevronBackground: =RGBA(39, 67, 125, 1)
+                DisplayFields: =["Value"]
+                InputTextPlaceholder: =""
+                IsSearchable: =false
+                Items: |-
+                    =[
+                        "APROVADA",
+                        "REPROVADA",
+                        "EM APROVAÇÃO"
+                    ]
+                SearchFields: =["Value"]
+                SearchItems: =[]
+                SelectMultiple: =false
+                Size: =9
+                Width: =187
+                X: =315
+                Y: =42
+                ZIndex: =15
+
+            SS_CT_FUNDO_FILTRO_STATUS_FLUXO_TITULO As label:
+                FontWeight: =FontWeight.Bold
+                Height: =35
+                PaddingLeft: =0
+                Text: ="Aprovação"
+                Width: =187
+                X: =315
+                Y: =7
+                ZIndex: =16
+
+            SS_CT_FUNDO_FILTRO_BTN_DOWNLOAD As icon.Download:
+                Color: =RGBA(39, 67, 125, 1)
+                Height: =40
+                Icon: =Icon.Download
+                OnSelect: |
+                    =UpdateContext({VLC_LOADING: true});
+                    Launch(GABE_DOWNLOAD_REL.Run("
+                        SELECT
+                             COD_MATRICULA
+                            ,DT_INICIO
+                            ,DT_FIM
+                            ,PCT
+                            ,COD_TIPO_BOLSA
+                            ,NOM_MARCA
+                            ,NOM_TIPO_CURSO
+                            ,IND_CURSO_TODO	
+                            ,ID_SOLICITACAO
+                            ,LOTE
+                            ,EMAIL_USUARIO
+                            ,MATRICULA_FUNCIONAL
+                            ,NOM_ALUNO
+                            ,CPF_ALUNO
+                            ,MOTIVO
+                            ,IND_COLABORADOR
+                            ,ID_DIRETORIA
+                            ,NOM_DIRETORIA
+                            ,FORMAT(DT_REFERENCIA,'dd/MM/yyyy HH:mm:ss') AS DT_REFERENCIA
+                            ,ID_SOLICITACAO_TIPO
+                            ,NOM_SOLICITACAO_TIPO
+                            ,STATUS_FLUXO
+                            ,STATUS_BOLSA
+                            ,ID_USUARIO_TIPO_N1
+                            ,NOM_USUARIO_TIPO_N1
+                            ,ID_FLUXO_APROVADOR_N1
+                            ,ID_USUARIO_APROVADOR_N1
+                            ,EMAIL_APROVADOR_N1
+                            ,IND_STATUS_APROVADOR_N1
+                            ,OBS_APROVADOR_N1
+                            ,FORMAT(DT_REFERENCIA_APROVADOR_N1,'dd/MM/yyyy HH:mm:ss') AS DT_REFERENCIA_APROVADOR_N1
+                            ,IND_APROVACAO_N2
+                            ,ID_FLUXO_APROVADOR_N2
+                            ,EMAIL_APROVADOR_N2
+                            ,IND_STATUS_APROVADOR_N2
+                            ,OBS_APROVADOR_N2
+                            ,FORMAT(DT_REFERENCIA_APROVADOR_N2,'dd/MM/yyyy HH:mm:ss') AS DT_REFERENCIA_APROVADOR_N2
+                            ,IND_LANCADA
+                            ,OBS_BOLSA
+                        FROM 
+                            A_GABE_V_SOLICITACAO").download);
+                    UpdateContext({VLC_LOADING: false})
+                Visible: |-
+                    =If(
+                        VGB_USUARIO_LOGADO_PERFIL.NOM_USUARIO_TIPO in 
+                            [
+                                "Remuneração e Benefícios - Gestão",
+                                "Remuneração e Benefícios - Solicitante"
+                            ],
+                        true,false
+                    )
+                Width: =40
+                X: =1225
+                Y: =42
+                ZIndex: =17
+
+        SS_CT_FUNDO_GALL__COD_MATRICULA_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Matrícula SIA - Inscrição / Lote"
+            Width: =118
+            X: =42
+            Y: =133
+            ZIndex: =3
+
+        SS_CT_FUNDO_GALL_NOM_ALUNO_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Nome"
+            Width: =354
+            X: =160
+            Y: =133
+            ZIndex: =4
+
+        SS_CT_FUNDO_GALL_VIGENCIA_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Vigência"
+            Width: =94
+            X: =805
+            Y: =133
+            ZIndex: =5
+
+        SS_CT_FUNDO_GALL_STATUS_FLUXO_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Status fluxo"
+            Width: =113
+            X: =949
+            Y: =133
+            ZIndex: =6
+
+        SS_CT_FUNDO_GALL_PCT_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="PCT"
+            Width: =50
+            X: =899
+            Y: =133
+            ZIndex: =9
+
+        SS_CT_FUNDO_GALL_SOLICITACAO_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Solicitação/Aprovação"
+            Width: =197
+            X: =1062
+            Y: =133
+            ZIndex: =11
+
+        SS_CT_FUNDO_GALL_IND_CURSO_TODO_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Curso todo"
+            Width: =91
+            X: =714
+            Y: =133
+            ZIndex: =12
+
+        SS_CT_FUNDO_GALL_MARCA_DIRETORIA_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Marca/Diretoria"
+            Width: =200
+            X: =514
+            Y: =133
+            ZIndex: =13
+
+        SS_CT_FUNDO_AVISO_REGISTROS As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Text: ="Sem registros"
+            Visible: |-
+                =If(
+                    CountRows(SS_CT_FUNDO_GALL.AllItems) = 0,
+                    true,
+                    false
+                )
+            Width: =1323
+            Y: =381
+            ZIndex: =14
+
+    SS_POPUP_APROVAR As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =768
+        Visible: =VLC_SS_POPUP_APROVAR
+        Width: =1366
+        ZIndex: =3
+
+        INS_POPUP_APROVAR_FUNDO As button:
+            BorderThickness: =1
+            Color: =RGBA(0, 0, 0, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(237, 237, 237, 1)
+            Height: =480
+            PaddingLeft: =0
+            PaddingTop: =0
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: =
+            Width: =1250
+            X: =58
+            Y: =156
+            ZIndex: =1
+
+        INS_POPUP_APROVAR_TITULO As button:
+            BorderThickness: =1
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(0, 28, 67, 1)
+            Height: =50
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =16
+            Text: ="Aprovação de solicitação"
+            Width: =1250
+            X: =58
+            Y: =156
+            ZIndex: =2
+
+        INS_POPUP_APROVAR_BTN_FECHAR As icon.CancelBadge:
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =35
+            Icon: =Icon.CancelBadge
+            OnSelect: |-
+                =UpdateContext({VLC_SS_POPUP_APROVAR:false});
+                Refresh(A_GABE_V_SOLICITACAO)
+            Visible: =true//vPPConfirmaBolsa
+            Width: =35
+            X: =1258
+            Y: =163
+            ZIndex: =3
+
+        INS_POPUP_APROVAR_FORM As formViewer:
+            BorderStyle: =BorderStyle.None
+            DataSource: =A_GABE_V_SOLICITACAO
+            Fill: =RGBA(26, 26, 26, 0.05)
+            Height: =431
+            Item: =LookUp(A_GABE_V_SOLICITACAO,ID_SOLICITACAO = VLC_SS_ID_SOLICITACAO)
+            NumberOfColumns: =1
+            SnapToColumns: =false
+            Width: =1250
+            X: =57
+            Y: =205
+            ZIndex: =6
+
+            INS_POPUP_APROVAR_FORM_NOM_ALUNO_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="NOM_ALUNO"
+                Default: =ThisItem.NOM_ALUNO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Nome:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =312
+                X: =0
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey14 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_NOM_ALUNO_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey14.Y + DataCardKey14.Height + 5
+                    ZIndex: =2
+
+            INS_POPUP_APROVAR_FORM_CPF_ALUNO_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="CPF_ALUNO"
+                Default: =ThisItem.CPF_ALUNO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="CPF:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =77
+                Required: =false
+                Width: =190
+                X: =1
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey30 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_CPF_ALUNO_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey30.Y + DataCardKey30.Height + 5
+                    ZIndex: =2
+
+            INS_POPUP_APROVAR_FORM_COD_MATRICULA_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="COD_MATRICULA"
+                Default: =ThisItem.COD_MATRICULA
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Matrícula:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =77
+                Required: =false
+                Width: =186
+                X: =2
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey13 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_COD_MATRICULA_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey13.Y + DataCardKey13.Height + 5
+                    ZIndex: =2
+
+            INS_POPUP_APROVAR_FORM_DT_REFERENCIA_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="DT_REFERENCIA"
+                Default: =ThisItem.DT_REFERENCIA
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Solicitação:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =84
+                Required: =false
+                Width: =208
+                X: =3
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey29 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_DT_REFERENCIA_DATACARD_VALUE As label:
+                    Align: =Align.Center
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey29.Y + DataCardKey29.Height + 5
+                    ZIndex: =2
+
+            INS_POPUP_APROVAR_FORM_EMAIL_SOLICITANTE_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="EMAIL_USUARIO"
+                Default: =ThisItem.EMAIL_USUARIO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Email solicitante:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =77
+                Required: =false
+                Width: =312
+                X: =4
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey25 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_EMAIL_SOLICITANTE_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey25.Y + DataCardKey25.Height + 5
+                    ZIndex: =2
+
+            INS_POPUP_APROVAR_FORM_NOM_TIPO_CURSO_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="NOM_TIPO_CURSO"
+                Default: =ThisItem.NOM_TIPO_CURSO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Tipo curso:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =188
+                X: =0
+                Y: =1
+                ZIndex: =1
+
+                DataCardKey15 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_NOM_TIPO_CURSO_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey15.Y + DataCardKey15.Height + 5
+                    ZIndex: =2
+
+            INS_POPUP_APROVAR_FORM_ND_COLABORADOR_DATACARD As typedDataCard.toggleViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="IND_CURSO_TODO"
+                Default: =ThisItem.IND_CURSO_TODO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Curso Todo:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =false
+                Width: =201
+                X: =3
+                Y: =1
+                ZIndex: =1
+
+                DataCardKey22 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_ND_COLABORADOR_DATACARD_VALUE As toggleSwitch:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    Default: =Parent.Default
+                    DisplayMode: =Parent.DisplayMode
+                    FalseText: ="NÃO"
+                    Size: =11
+                    TrueText: ="SIM"
+                    X: =30
+                    Y: =DataCardKey22.Y + DataCardKey22.Height + 5
+                    ZIndex: =2
+
+            INS_POPUP_APROVAR_FORM_NOM_MARCA_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="NOM_MARCA"
+                Default: =ThisItem.NOM_MARCA
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Marca:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =208
+                X: =4
+                Y: =1
+                ZIndex: =1
+
+                DataCardKey20 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingLeft: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_NOM_MARCA_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey20.Y + DataCardKey20.Height + 5
+                    ZIndex: =2
+
+            INS_POPUP_APROVAR_FORM_PCT_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="PCT"
+                Default: =ThisItem.PCT
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Percentual:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =188
+                X: =0
+                Y: =2
+                ZIndex: =1
+
+                DataCardKey19 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_PCT_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default&"%"
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey19.Y + DataCardKey19.Height + 5
+                    ZIndex: =2
+
+            INS_POPUP_APROVAR_FORM_DT_INICIO_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="DT_INICIO"
+                Default: =ThisItem.DT_INICIO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Início vigência:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =201
+                X: =1
+                Y: =2
+                ZIndex: =1
+
+                DataCardKey27 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_DT_INICIO_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Right(Parent.Default,7)
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey27.Y + DataCardKey27.Height + 5
+                    ZIndex: =2
+
+            INS_POPUP_APROVAR_FORM_DT_FIM_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="DT_FIM"
+                Default: =ThisItem.DT_FIM
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Fim vigência:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =188
+                X: =2
+                Y: =2
+                ZIndex: =1
+
+                DataCardKey28 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_DT_FIM_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Right(Parent.Default,7)
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey28.Y + DataCardKey28.Height + 5
+                    ZIndex: =2
+
+            INS_POPUP_APROVAR_FORM_MOTIVO_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="MOTIVO"
+                Default: =ThisItem.MOTIVO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Motivo solicitação:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =153
+                Required: =false
+                Width: =550
+                X: =0
+                Y: =3
+                ZIndex: =1
+
+                DataCardKey21 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                INS_POPUP_APROVAR_FORM_MOTIVO_DATACARD_VALUE As label:
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =111
+                    Overflow: =Overflow.Scroll
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey21.Y + DataCardKey21.Height + 5
+                    ZIndex: =2
+
+        SS_POPUP_CT_APROVAR_STATUS As groupContainer.manualLayoutContainer:
+            BorderStyle: =BorderStyle.None
+            Fill: =RGBA(26, 26, 26, 0.05)
+            Height: =326
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            Width: =668
+            X: =625
+            Y: =293
+            ZIndex: =10
+
+            "SS_POPUP_CT_APROVAR_STATUS_GALL As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                BorderStyle: =BorderStyle.None
+                Height: =270
+                Items: =CLC_SS_STATUS_FLUXO
+                Layout: =Layout.Vertical
+                NavigationStep: =5
+                ShowNavigation: =true
+                ShowScrollbar: =false
+                TemplatePadding: =10
+                TemplateSize: =50
+                Width: =667
+                Y: =46
+                ZIndex: =1
+
+                SS_POPUP_CT_APROVAR_STATUS_GALL_FUNDO As button:
+                    DisplayMode: =DisplayMode.View
+                    Fill: =RGBA(39, 67, 125, 0.15)
+                    Height: =50
+                    RadiusBottomLeft: =5
+                    RadiusBottomRight: =5
+                    RadiusTopLeft: =5
+                    RadiusTopRight: =5
+                    Text: =""
+                    Width: =647
+                    ZIndex: =1
+
+                SS_POPUP_CT_APROVAR_STATUS_GALL_STATUS_FLUXO As label:
+                    Align: =Align.Center
+                    Color: =SS_POPUP_CT_APROVAR_STATUS_GALL_FUNDO_STATUS.Fill
+                    FontWeight: =FontWeight.Bold
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =9
+                    Text: =ThisItem.STATUS_FLUXO
+                    Tooltip: =ThisItem.OBS
+                    Width: =124
+                    X: =523
+                    ZIndex: =2
+
+                SS_POPUP_CT_APROVAR_STATUS_GALL_COD_MATRICULA As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =9
+                    Text: =ThisItem.EMAIL_USUARIO_APROVADOR
+                    Width: =255
+                    X: =187
+                    ZIndex: =3
+
+                SS_POPUP_CT_APROVAR_STATUS_GALL_FUNDO_STATUS As button:
+                    DisplayMode: =DisplayMode.View
+                    Fill: |-
+                        =Switch(
+                            ThisItem.STATUS_FLUXO,
+                            "APROVADA", RGBA(118,161,58,1),
+                            "REPROVADA",RGBA(221, 75, 57, 1),
+                            RGBA(62,138,176,1)
+                        )
+                    Height: =50
+                    RadiusBottomLeft: =5
+                    RadiusBottomRight: =5
+                    RadiusTopLeft: =5
+                    RadiusTopRight: =5
+                    Text: =""
+                    Tooltip: |-
+                        ="Observação: "&If(IsBlank(ThisItem.OBS),"N/A",Proper(ThisItem.OBS))
+                    Width: =30
+                    ZIndex: =17
+
+                SS_POPUP_CT_APROVAR_STATUS_GALL_DT_REFERENCIA As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =9
+                    Text: =If(IsBlank(ThisItem.DT_REFERENCIA),"-",ThisItem.DT_REFERENCIA)
+                    Width: =81
+                    X: =442
+                    ZIndex: =24
+
+                SS_POPUP_CT_APROVAR_STATUS_GALL_AREA As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =9
+                    Text: =ThisItem.NOM_USUARIO_TIPO
+                    Width: =157
+                    X: =30
+                    ZIndex: =25
+
+            SS_POPUP_CT_APROVAR_STATUS_TITULO As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Bold
+                Text: ="Status fluxo de aprovação"
+                Width: =667
+                Y: =6
+                ZIndex: =2
+
+        SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(0, 0, 0, 0.5)
+            Height: =768
+            Visible: =VLC_SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF
+            Width: =1366
+            ZIndex: =11
+
+            SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_DESCRICAO As button:
+                BorderThickness: =1
+                Color: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(237, 237, 237, 1)
+                Height: =311
+                PaddingBottom: =150
+                PaddingLeft: =0
+                PaddingTop: =0
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: ="Deseja realmente reprovar solicitação?"
+                Width: =576
+                X: =395
+                Y: =229
+                ZIndex: =1
+
+            SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_BTN_SIM As button:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                DisplayMode: =If(Len(SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_TXT_JUSITICATIVA) > 0,DisplayMode.Edit,DisplayMode.Disabled)
+                Fill: =RGBA(0, 166, 90, 1)
+                FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =/*UpdateContext({VLC_LOADING: true});;
+                    If(
+                        VLC_SS_ID_USUARIO_N2 = VGB_USUARIO_LOGADO_ID && VLC_SS_IND_STATUS = "N";
+                        Patch(
+                            A_GABE_D_FLUXO_N2;
+                            Defaults(A_GABE_D_FLUXO_N2);
+                            {
+                                ID_USUARIO: VGB_USUARIO_LOGADO_ID;
+                                ID_FLUXO: VLC_SS_ID_FLUXO;
+                                IND_APROVADO: 0;
+                                OBS: SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_TXT_JUSITICATIVA.Text;
+                                DT_REFERENCIA: Now()
+                            }
+                        );
+                        Patch(
+                            A_GABE_D_FLUXO;
+                            Defaults(A_GABE_D_FLUXO);
+                            {
+                                ID_USUARIO_N1: VGB_USUARIO_LOGADO_ID;
+                                ID_USUARIO_N2: Blank();
+                                ID_SOLICITACAO: VLC_SS_ID_SOLICITACAO;
+                                IND_STATUS: "R";
+                                IND_APROVACAO_N2: 0;
+                                OBS: SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_TXT_JUSITICATIVA.Text;
+                                DT_REFERENCIA: Now()
+                            }
+                        )
+                    );;
+                    If(
+                        IsEmpty(Errors(A_GABE_D_FLUXO));
+                        Refresh(A_GABE_D_FLUXO);;
+                        NewForm(SL_CT_FORM);;
+                        ResetForm(SL_CT_FORM);;
+                        Notify(
+                            "Solicitação reprovada com suscesso !";
+                            NotificationType.Success;
+                            3000
+                        );
+                        Notify(
+                            "Ocorreu um erro, tente novamente !";
+                            NotificationType.Error;
+                            3000
+                        )
+                    );;
+                    Select(SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_BTN_FECHAR);;
+                    Select(INS_POPUP_APROVAR_BTN_FECHAR);;
+                    UpdateContext({VLC_LOADING: false})*/
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: ="Sim"
+                Visible: =true//vPPConfirmaBolsa
+                X: =510
+                Y: =350
+                ZIndex: =2
+
+            SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_BTN_NAO As button:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Fill: =RGBA(221, 75, 57, 1)
+                FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: =Select(SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_BTN_FECHAR)
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: ="Não"
+                Visible: =true//vPPConfirmaBolsa
+                X: =695
+                Y: =350
+                ZIndex: =3
+
+            SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_TITULO As button:
+                BorderThickness: =1
+                DisabledColor: =RGBA(255, 255, 255, 1)
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(0, 28, 67, 1)
+                Height: =50
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Size: =16
+                Text: ="Confirmação"
+                Width: =576
+                X: =395
+                Y: =229
+                ZIndex: =4
+
+            SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_BTN_FECHAR As icon.CancelBadge:
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =35
+                Icon: =Icon.CancelBadge
+                OnSelect: |-
+                    =UpdateContext({VLC_SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF: false});
+                    Reset(SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_TXT_JUSITICATIVA)
+                Visible: =true//vPPConfirmaBolsa
+                Width: =35
+                X: =921
+                Y: =236
+                ZIndex: =5
+
+            SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_TXT_JUSITICATIVA As text:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Default: =
+                Height: =111
+                HintText: ="Justificativa"
+                Mode: =TextMode.MultiLine
+                Size: =12
+                Width: =541
+                X: =415
+                Y: =405
+                ZIndex: =6
+
+        SS_POPUP_CT_APROVAR_STATUS_APROVAR_CONF As groupContainer.manualLayoutContainer:
+            Fill: =RGBA(0, 0, 0, 0.5)
+            Height: =768
+            Visible: =VLC_SS_POPUP_CT_APROVAR_STATUS_APROVAR_CONF
+            Width: =1366
+            ZIndex: =12
+
+            SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_DESCRICAO_1 As button:
+                BorderThickness: =1
+                Color: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(237, 237, 237, 1)
+                Height: =392
+                PaddingBottom: =220
+                PaddingLeft: =0
+                PaddingTop: =0
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: ="Deseja realmente aprovar ?"
+                Width: =576
+                X: =395
+                Y: =188
+                ZIndex: =1
+
+            SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_BTN_SIM_1 As button:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                DisplayMode: |-
+                    =If(
+                        IsBlank(SS_POPUP_CT_APROVAR_STATUS_APROVAR_CONF_CB_STATUS_FLUXO.Selected),
+                        //&& !(VLC_SS_ID_USUARIO_N2 = VGB_USUARIO_LOGADO_ID && VLC_SS_IND_STATUS = "N");
+                        DisplayMode.Disabled,
+                        DisplayMode.Edit
+                    )
+                Fill: =RGBA(0, 166, 90, 1)
+                FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: |-
+                    =/*UpdateContext({VLC_LOADING: true});;
+                    UpdateContext({VLC_SS_FLUXO:
+                        Patch(
+                            A_GABE_D_FLUXO;
+                            Defaults(A_GABE_D_FLUXO);
+                            {
+                                ID_USUARIO: VGB_USUARIO_LOGADO_ID;
+                                ID_SOLICITACAO: VLC_SS_ID_SOLICITACAO;
+                                IND_STATUS: If(INS_FILTRO_CB_STATUS_FLUXO_1.Selected.EMAIL_USUARIO = "Não";"A";"N");
+                                IND_APROVACAO_N2: If(INS_FILTRO_CB_STATUS_FLUXO_1.Selected.EMAIL_USUARIO = "Não";0;1);
+                                OBS: SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_TXT_JUSITICATIVA_1.Text;
+                                DT_REFERENCIA: Now()
+                            }
+                    )});;
+                    If(
+                        VLC_SS_FLUXO.IND_STATUS = "N";
+                        Patch(
+                            A_GABE_D_FLUXO_N2;
+                            Defaults(A_GABE_D_FLUXO_N2);
+                            {
+                                ID_USUARIO: INS_FILTRO_CB_STATUS_FLUXO_1.Selected.ID_USUARIO;
+                                ID_USUARIO_SOLICITANTE: VGB_USUARIO_LOGADO_ID;
+                                ID_FLUXO: VLC_SS_FLUXO.ID_FLUXO;
+                                IND_APROVADO: Blank();
+                                IND_REMOVIDO: 0;
+                                OBS: SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_TXT_JUSITICATIVA.Text;
+                                DT_REFERENCIA: Blank()
+                            }
+                        )
+                    );;
+                    If(
+                        IsEmpty(Errors(A_GABE_D_FLUXO));
+                        Refresh(A_GABE_D_FLUXO);;
+                        NewForm(SL_CT_FORM);;
+                        ResetForm(SL_CT_FORM);;
+                        Notify(
+                            "Solicitação aprovada com suscesso !";
+                            NotificationType.Success;
+                            3000
+                        );
+                        Notify(
+                            "Ocorreu um erro, tente novamente !";
+                            NotificationType.Error;
+                            3000
+                        )
+                    );;
+                    Select(SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_BTN_FECHAR_1);;
+                    Select(INS_POPUP_APROVAR_BTN_FECHAR);;
+                    UpdateContext({VLC_LOADING: false})*/
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: ="Sim"
+                Visible: =true//vPPConfirmaBolsa
+                X: =510
+                Y: =511
+                ZIndex: =2
+
+            SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_BTN_NAO_1 As button:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Fill: =RGBA(221, 75, 57, 1)
+                FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+                HoverFill: =ColorFade(Self.Fill, -20%)
+                OnSelect: =Select(SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_BTN_FECHAR_1)
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: ="Não"
+                Visible: =true//vPPConfirmaBolsa
+                X: =695
+                Y: =511
+                ZIndex: =3
+
+            SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_TITULO_1 As button:
+                BorderThickness: =1
+                DisabledColor: =RGBA(255, 255, 255, 1)
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(0, 28, 67, 1)
+                Height: =50
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Size: =16
+                Text: ="Confirmação"
+                Width: =576
+                X: =395
+                Y: =188
+                ZIndex: =4
+
+            SS_POPUP_CT_APROVAR_STATUS_REPROVAR_CONF_BTN_FECHAR_1 As icon.CancelBadge:
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(255, 255, 255, 1)
+                Height: =35
+                Icon: =Icon.CancelBadge
+                OnSelect: |-
+                    =UpdateContext({VLC_SS_POPUP_CT_APROVAR_STATUS_APROVAR_CONF: false});
+                    Reset(SS_POPUP_CT_APROVAR_STATUS_APROVAR_CONF_CB_STATUS_FLUXO);
+                    Reset(SS_POPUP_CT_APROVAR_STATUS_APROVAR_CONF_REPROVAR_CONF_TXT_JUSITICATIVA)
+                Visible: =true//vPPConfirmaBolsa
+                Width: =35
+                X: =921
+                Y: =195
+                ZIndex: =5
+
+            SS_POPUP_CT_APROVAR_STATUS_APROVAR_CONF_CB_STATUS_FLUXO As combobox:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                ChevronBackground: =RGBA(39, 67, 125, 1)
+                DisplayFields: =["EMAIL_USUARIO"]
+                DisplayMode: |-
+                    =DisplayMode.Edit
+                    /*If(
+                        VLC_SS_ID_USUARIO_N2 = VGB_USUARIO_LOGADO_ID && VLC_SS_IND_STATUS = "N";
+                        DisplayMode.Disabled;
+                        DisplayMode.Edit
+                    )*/
+                InputTextPlaceholder: =""
+                IsSearchable: =false
+                SearchFields: =["EMAIL_USUARIO"]
+                SearchItems: =[]
+                SelectMultiple: =false
+                Width: =354
+                X: =547
+                Y: =309
+                ZIndex: =6
+
+            SS_POPUP_CT_APROVAR_STATUS_APROVAR_CONF_LABEL As label:
+                DisplayMode: =SS_POPUP_CT_APROVAR_STATUS_APROVAR_CONF_CB_STATUS_FLUXO.DisplayMode
+                FontWeight: =FontWeight.Bold
+                Text: |-
+                    ="2º aprovação:"
+                Width: =132
+                X: =415
+                Y: =309
+                ZIndex: =7
+
+            SS_POPUP_CT_APROVAR_STATUS_APROVAR_CONF_REPROVAR_CONF_TXT_JUSITICATIVA As text:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Default: =
+                Height: =111
+                HintText: ="Observação"
+                Mode: =TextMode.MultiLine
+                Size: =12
+                Width: =541
+                X: =415
+                Y: =372
+                ZIndex: =8
+
+    SS_COMP_LOADING As COMP_LOADING:
+        Visible: =VLC_LOADING
+        ZIndex: =4
+
+    SS_FUNCAO_VERSAO_MANUTENCAO As button:
+        BorderStyle: =BorderStyle.None
+        BorderThickness: =0
+        Height: =30
+        OnSelect: |-
+            =UpdateContext({VLC_LOADING: true});
+            //Verifica a versão
+            Refresh(A_AA_D_MANUTENCAO);
+            ClearCollect(CLC_A_AA_D_MANUTENCAO,LookUp(A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO));
+            If(Trim(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).VERSAO) = VGB_VERSAO,Set(VGB_POPUP_VERSAO, false),Set(VGB_POPUP_VERSAO, true));
+            //Verifica o status manutenção/atualização
+            If(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).IND_STATUS > 0,Set(VGB_POPUP_MANUTENCAO, true),Set(VGB_POPUP_MANUTENCAO, false));
+            UpdateContext({VLC_LOADING: false})
+        Text: ="FUNCAO_VERSAO_MANUTENCAO"
+        Visible: =false
+        Width: =331
+        X: =568
+        Y: =10
+        ZIndex: =6
+
+    SS_COMP_MANUTENCAO As COMP_MANUTENCAO:
+        VAR_DESCRICAO: |-
+            =Switch(
+                First(CLC_A_AA_D_MANUTENCAO).IND_STATUS,
+                1,"Sistema em manutenção",
+                2,"Sistema em atualização"
+            )
+        VAR_DESCRICAO_STATUS: =First(CLC_A_AA_D_MANUTENCAO).DESCRICAO_STATUS
+        Visible: =VGB_POPUP_MANUTENCAO
+        ZIndex: =7
+
+    SS_COMP_VERSAO As COMP_VERSAO:
+        Visible: =VGB_POPUP_VERSAO
+        ZIndex: =8
+

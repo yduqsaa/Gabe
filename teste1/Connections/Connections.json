@@ -1,0 +1,322 @@
+{
+  "1d2b450d-9c81-4cfa-ba7f-1a22b1e0e321": {
+    "appActions": [
+      "MyProfile",
+      "UserProfile_V2",
+      "SearchUser"
+    ],
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Usuários do Office 365",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1664/1.0.1664.3477/office365users/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_office365users",
+      "parameterHints": {},
+      "parameterHintsV2": {}
+    },
+    "datasets": {},
+    "dataSources": [
+      "UsuáriosdoOffice365"
+    ],
+    "dependencies": {},
+    "dependents": [],
+    "id": "1d2b450d-9c81-4cfa-ba7f-1a22b1e0e321"
+  },
+  "1f118eac-cbef-4349-93e5-8836ea4ad189": {
+    "appActions": [
+      "providers/PowerPlatform.Governance/Operations/Read",
+      "providers/PowerPlatform.Governance/Operations/Write"
+    ],
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "SharePoint",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1664/1.0.1664.3477/sharepointonline/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_sharepointonline",
+      "parameterHints": {},
+      "parameterHintsV2": {}
+    },
+    "datasets": {
+      "https://estacio.sharepoint.com/sites/AA_DEV": {
+        "dataSources": {
+          "A_GABE_D_ARQUIVO_PADRAO": {
+            "tableName": "2ae3dc77-d25a-485a-876f-aca3895942e8"
+          },
+          "A_GABE_D_IMPORTACAO_LOTE": {
+            "tableName": "c78fe33b-9e84-4842-bc32-5b9598ae9024"
+          }
+        }
+      }
+    },
+    "dataSources": [
+      "A_GABE_D_IMPORTACAO_LOTE",
+      "A_GABE_D_ARQUIVO_PADRAO"
+    ],
+    "dependencies": {},
+    "dependents": [
+      "b6c84781-5704-4d65-b248-ae0d21202c70",
+      "27b49378-b7c2-4479-a069-65d8e3563ed5"
+    ],
+    "id": "1f118eac-cbef-4349-93e5-8836ea4ad189"
+  },
+  "27b49378-b7c2-4479-a069-65d8e3563ed5": {
+    "appActions": [
+      "Run"
+    ],
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Fluxos lógicos",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1664/1.0.1664.3477/logicflows/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
+      "parameterHints": {
+        "1f118eac-cbef-4349-93e5-8836ea4ad189": {
+          "value": "shared_sharepointonline"
+        },
+        "38718210-08e1-4fcd-9a95-a77cef984036": {
+          "value": "shared_excelonlinebusiness"
+        },
+        "workflowEntityId": {},
+        "workflowName": {
+          "value": "84c86033-a061-4dbc-8b05-51498a25958a"
+        }
+      },
+      "parameterHintsV2": {
+        "shared_excelonlinebusiness": {
+          "value": "38718210-08e1-4fcd-9a95-a77cef984036"
+        },
+        "shared_sharepointonline": {
+          "value": "1f118eac-cbef-4349-93e5-8836ea4ad189"
+        },
+        "workflowEntityId": {},
+        "workflowName": {
+          "value": "84c86033-a061-4dbc-8b05-51498a25958a"
+        }
+      }
+    },
+    "datasets": {},
+    "dataSources": [
+      "GABE_SOLICITACAO_LOTE"
+    ],
+    "dependencies": {
+      "shared_excelonlinebusiness": "38718210-08e1-4fcd-9a95-a77cef984036",
+      "shared_sharepointonline": "1f118eac-cbef-4349-93e5-8836ea4ad189"
+    },
+    "dependents": [],
+    "id": "27b49378-b7c2-4479-a069-65d8e3563ed5"
+  },
+  "38718210-08e1-4fcd-9a95-a77cef984036": {
+    "appActions": [],
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Excel Online (Business)",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1658/1.0.1658.3452/excelonlinebusiness/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_excelonlinebusiness",
+      "parameterHints": {},
+      "parameterHintsV2": {}
+    },
+    "datasets": {},
+    "dataSources": [],
+    "dependencies": {},
+    "dependents": [
+      "27b49378-b7c2-4479-a069-65d8e3563ed5"
+    ],
+    "id": "38718210-08e1-4fcd-9a95-a77cef984036"
+  },
+  "b6c84781-5704-4d65-b248-ae0d21202c70": {
+    "appActions": [
+      "Run"
+    ],
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Fluxos lógicos",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1664/1.0.1664.3477/logicflows/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_logicflows",
+      "parameterHints": {
+        "1f118eac-cbef-4349-93e5-8836ea4ad189": {
+          "value": "shared_sharepointonline_1"
+        },
+        "f18a647d-315b-45b8-a840-8bd740c40eb2": {
+          "value": "shared_sql"
+        },
+        "workflowEntityId": {},
+        "workflowName": {
+          "value": "aabd7015-2218-4074-90f2-796435991cc0"
+        }
+      },
+      "parameterHintsV2": {
+        "shared_sharepointonline_1": {
+          "value": "1f118eac-cbef-4349-93e5-8836ea4ad189"
+        },
+        "shared_sql": {
+          "value": "f18a647d-315b-45b8-a840-8bd740c40eb2"
+        },
+        "shared_sql_1": {
+          "value": "f18a647d-315b-45b8-a840-8bd740c40eb2"
+        },
+        "workflowEntityId": {},
+        "workflowName": {
+          "value": "aabd7015-2218-4074-90f2-796435991cc0"
+        }
+      }
+    },
+    "datasets": {},
+    "dataSources": [
+      "GABE_DOWNLOAD_REL"
+    ],
+    "dependencies": {
+      "shared_sharepointonline_1": "1f118eac-cbef-4349-93e5-8836ea4ad189",
+      "shared_sql": "f18a647d-315b-45b8-a840-8bd740c40eb2",
+      "shared_sql_1": "f18a647d-315b-45b8-a840-8bd740c40eb2"
+    },
+    "dependents": [],
+    "id": "b6c84781-5704-4d65-b248-ae0d21202c70"
+  },
+  "dd1c6814-a837-4e67-a134-32c20d52b3fb": {
+    "appActions": [],
+    "connectionRef": {
+      "apiTier": "Standard",
+      "displayName": "Office 365 Outlook",
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1664/1.0.1664.3477/office365/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_office365",
+      "parameterHints": {},
+      "parameterHintsV2": {}
+    },
+    "datasets": {},
+    "dataSources": [
+      "Office365Outlook"
+    ],
+    "dependencies": {},
+    "dependents": [],
+    "id": "dd1c6814-a837-4e67-a134-32c20d52b3fb"
+  },
+  "f18a647d-315b-45b8-a840-8bd740c40eb2": {
+    "appActions": [
+      "providers/PowerPlatform.Governance/Operations/Read",
+      "providers/PowerPlatform.Governance/Operations/Write"
+    ],
+    "connectionRef": {
+      "apiTier": "Premium",
+      "authenticationType": "sqlAuthentication",
+      "displayName": "SQL Server",
+      "executionRestrictions": {
+        "apiId": "/providers/microsoft.powerapps/apis/shared_sql",
+        "apiVer": 2,
+        "appVer": "3.23122.17",
+        "modifiedOn": "2024-01-04 14:51:32",
+        "policy": "{\"type\":\"tabular\",\"dataSources\":{\"[dbo].[aa_d_periodo]\":[\"get\"],\"[dbo].[a_gabe_d_fluxo]\":[\"post\",\"patch\",\"get\"],\"[dbo].[a_gabe_d_fluxo_n2]\":[\"post\",\"patch\",\"get\"],\"[dbo].[a_gabe_d_solicitacao]\":[\"post\",\"patch\",\"get\"],\"[dbo].[a_gabe_v_solicitacao]\":[\"get\"],\"[dbo].[a_gabe_v_usuario]\":[\"get\"],\"[dbo].[a_gabe_d_usuario]\":[\"post\",\"patch\",\"get\"],\"[dbo].[a_gabe_d_marca]\":[\"get\"],\"[dbo].[a_gabe_d_solicitacao_tipo]\":[\"get\"],\"[dbo].[a_gabe_v_fluxo_aprovacao]\":[\"get\"],\"[dbo].[a_gabe_v_fluxo]\":[\"get\"],\"[dbo].[a_gabe_v_fluxo_n2]\":[\"get\"],\"[dbo].[a_gabe_v_fluxo_status]\":[\"get\"],\"[dbo].[a_gabe_d_diretoria]\":[\"get\"],\"[dbo].[a_gabe_v_diretoria]\":[\"get\"],\"[dbo].[a_gabe_d_solicitacao_email]\":[\"post\",\"patch\",\"get\"],\"[dbo].[a_gabe_v_fluxo_aprovacao_email]\":[\"get\"],\"[dbo].[a_gabe_d_usuario_tipo]\":[\"get\"],\"[dbo].[a_gabe_d_usuario_area]\":[\"get\"],\"[dbo].[a_aa_d_manutencao]\":[\"get\"],\"[dbo].[a_gabe_d_usuario_ad]\":[\"post\",\"patch\",\"get\"],\"[dbo].[a_aa_log_acesso]\":[\"post\",\"patch\",\"get\"]}}",
+        "version": 1
+      },
+      "iconUri": "https://connectoricons-prod.azureedge.net/releases/v1.0.1666/1.0.1666.3495/sql/icon.png",
+      "id": "/providers/microsoft.powerapps/apis/shared_sql",
+      "parameterHints": {},
+      "parameterHintsV2": {},
+      "sharedConnectionId": "/providers/microsoft.powerapps/apis/shared_sql/connections/ed30cd1beee5451183fe1368b45eff23"
+    },
+    "datasets": {
+      "sqlpricingltv.database.windows.net,DEV": {
+        "dataSources": {
+          "A_AA_D_MANUTENCAO": {
+            "tableName": "[dbo].[A_AA_D_MANUTENCAO]"
+          },
+          "A_AA_LOG_ACESSO": {
+            "tableName": "[dbo].[A_AA_LOG_ACESSO]"
+          },
+          "A_GABE_D_DIRETORIA": {
+            "tableName": "[dbo].[A_GABE_D_DIRETORIA]"
+          },
+          "A_GABE_D_FLUXO": {
+            "tableName": "[dbo].[A_GABE_D_FLUXO]"
+          },
+          "A_GABE_D_FLUXO_APROVACAO": {
+            "tableName": "[dbo].[A_GABE_D_FLUXO_APROVACAO]"
+          },
+          "A_GABE_D_FLUXO_N2": {
+            "tableName": "[dbo].[A_GABE_D_FLUXO_N2]"
+          },
+          "A_GABE_D_MARCA": {
+            "tableName": "[dbo].[A_GABE_D_MARCA]"
+          },
+          "A_GABE_D_SOLICITACAO": {
+            "tableName": "[dbo].[A_GABE_D_SOLICITACAO]"
+          },
+          "A_GABE_D_SOLICITACAO_EMAIL": {
+            "tableName": "[dbo].[A_GABE_D_SOLICITACAO_EMAIL]"
+          },
+          "A_GABE_D_SOLICITACAO_TIPO": {
+            "tableName": "[dbo].[A_GABE_D_SOLICITACAO_TIPO]"
+          },
+          "A_GABE_D_USUARIO": {
+            "tableName": "[dbo].[A_GABE_D_USUARIO]"
+          },
+          "A_GABE_D_USUARIO_AD": {
+            "tableName": "[dbo].[A_GABE_D_USUARIO_AD]"
+          },
+          "A_GABE_D_USUARIO_AREA": {
+            "tableName": "[dbo].[A_GABE_D_USUARIO_AREA]"
+          },
+          "A_GABE_D_USUARIO_TIPO": {
+            "tableName": "[dbo].[A_GABE_D_USUARIO_TIPO]"
+          },
+          "A_GABE_V_DIRETORIA": {
+            "tableName": "[dbo].[A_GABE_V_DIRETORIA]"
+          },
+          "A_GABE_V_FLUXO": {
+            "tableName": "[dbo].[A_GABE_V_FLUXO]"
+          },
+          "A_GABE_V_FLUXO_APROVACAO": {
+            "tableName": "[dbo].[A_GABE_V_FLUXO_APROVACAO]"
+          },
+          "A_GABE_V_FLUXO_APROVACAO_EMAIL": {
+            "tableName": "[dbo].[A_GABE_V_FLUXO_APROVACAO_EMAIL]"
+          },
+          "A_GABE_V_FLUXO_N2": {
+            "tableName": "[dbo].[A_GABE_V_FLUXO_N2]"
+          },
+          "A_GABE_V_FLUXO_STATUS": {
+            "tableName": "[dbo].[A_GABE_V_FLUXO_STATUS]"
+          },
+          "A_GABE_V_SOLICITACAO": {
+            "tableName": "[dbo].[A_GABE_V_SOLICITACAO]"
+          },
+          "A_GABE_V_USUARIO": {
+            "tableName": "[dbo].[A_GABE_V_USUARIO]"
+          },
+          "AA_D_PERIODO": {
+            "tableName": "[dbo].[AA_D_PERIODO]"
+          }
+        }
+      }
+    },
+    "dataSources": [
+      "AA_D_PERIODO",
+      "A_GABE_D_FLUXO",
+      "A_GABE_D_USUARIO",
+      "A_GABE_D_MARCA",
+      "A_GABE_V_USUARIO",
+      "A_GABE_D_SOLICITACAO_TIPO",
+      "A_GABE_D_FLUXO_APROVACAO",
+      "A_GABE_V_FLUXO_APROVACAO",
+      "A_GABE_V_FLUXO",
+      "A_GABE_V_FLUXO_N2",
+      "A_GABE_V_FLUXO_STATUS",
+      "A_GABE_D_DIRETORIA",
+      "A_GABE_V_DIRETORIA",
+      "A_GABE_D_FLUXO_N2",
+      "A_GABE_V_FLUXO_APROVACAO_EMAIL",
+      "A_GABE_D_SOLICITACAO",
+      "A_GABE_V_SOLICITACAO",
+      "A_GABE_D_SOLICITACAO_EMAIL",
+      "A_GABE_D_USUARIO_TIPO",
+      "A_GABE_D_USUARIO_AREA",
+      "A_GABE_D_USUARIO_AD",
+      "A_AA_D_MANUTENCAO",
+      "A_AA_LOG_ACESSO"
+    ],
+    "dependencies": {},
+    "dependents": [
+      "b6c84781-5704-4d65-b248-ae0d21202c70"
+    ],
+    "endpoints": [
+      "sqlpricingltv.database.windows.net,DEV"
+    ],
+    "id": "f18a647d-315b-45b8-a840-8bd740c40eb2"
+  }
+}

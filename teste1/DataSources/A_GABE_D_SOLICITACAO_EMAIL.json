@@ -1,0 +1,27 @@
+[
+  {
+    "ApiId": "/providers/microsoft.powerapps/apis/shared_sql",
+    "CdpRevision": {
+      "BaseUrl": "/v2",
+      "LastChangedTimeString": "2023-09-07T00:08:02.9190000Z",
+      "RevisionNumber": 2
+    },
+    "ConnectedDataSourceInfoNameMapping": {
+      "CORPO": "CORPO",
+      "DESTINATARIO": "DESTINATARIO",
+      "DT_REFERENCIA": "DT_REFERENCIA",
+      "ID_SOLICITACAO": "ID_SOLICITACAO",
+      "ID_SOLICITACAO_EMAIL": "ID_SOLICITACAO_EMAIL",
+      "IND_ENVIADO": "IND_ENVIADO",
+      "LOTE": "LOTE",
+      "REMETENTE": "REMETENTE",
+      "TITULO": "TITULO"
+    },
+    "DatasetName": "sqlpricingltv.database.windows.net,DEV",
+    "EncodeDataset": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "Name": "A_GABE_D_SOLICITACAO_EMAIL",
+    "Type": "ConnectedDataSourceInfo"
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {
+    "IsComponentScoped": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "Name": "CLC_CT_DT_FIM",
+    "Type": "CollectionDataSourceInfo"
+  }
+]

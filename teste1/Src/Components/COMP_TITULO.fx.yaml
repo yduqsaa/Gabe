@@ -1,0 +1,92 @@
+COMP_TITULO As CanvasComponent:
+    Fill: =RGBA(0, 0, 0, 0.0)
+    Height: =50
+    VAR_ATUALIZAR: |-
+        =Table({SampleStringField: "SampleText", SampleNumberField: 10, SampleBooleanField: true})
+    VAR_BTN_VISIBLE_INICIO: =true
+    VAR_BTN_VISIBLE_VOLTAR: =true
+    VAR_NOME_PAGINA: ="Nome da Página"
+    VAR_ONSELECT_INICIO: =App.ActiveScreen
+    VAR_ONSELECT_VOLTAR: =App.ActiveScreen
+    Width: =App.Width
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    COMP_TITULO_FUNDO As rectangle:
+        BorderStyle: =BorderStyle.None
+        Fill: =RGBA(0, 0, 0, 0.3)
+        Height: =50
+        Width: =1366
+        ZIndex: =1
+
+    COMP_TITULO_NOME_PAGINA As label:
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        PaddingLeft: =15
+        Size: =18
+        Text: ="GABe | "&COMP_TITULO.VAR_NOME_PAGINA
+        Width: =1116
+        ZIndex: =3
+
+    COMP_TITULO_BTN_INICIO As icon.BackArrow:
+        BorderStyle: =BorderStyle.None
+        Color: =RGBA(255, 255, 255, 1)
+        FocusedBorderThickness: =0
+        Height: =50
+        Icon: =Icon.Home
+        OnSelect: =Navigate(COMP_TITULO.VAR_ONSELECT_INICIO,ScreenTransition.Fade)
+        PaddingBottom: =5
+        PaddingTop: =5
+        Visible: =COMP_TITULO.VAR_BTN_VISIBLE_INICIO
+        Width: =58
+        X: =1250
+        ZIndex: =4
+
+    COMP_TITULO_BTN_VOLTAR As icon.BackArrow:
+        BorderStyle: =BorderStyle.None
+        Color: =RGBA(255, 255, 255, 1)
+        FocusedBorderThickness: =0
+        Height: =50
+        Icon: =Icon.BackArrow
+        OnSelect: =Navigate(COMP_TITULO.VAR_ONSELECT_VOLTAR,ScreenTransition.Fade)
+        PaddingBottom: =5
+        PaddingTop: =5
+        Visible: =COMP_TITULO.VAR_BTN_VISIBLE_VOLTAR
+        Width: =58
+        X: =1308
+        ZIndex: =5
+
+    PE_CABECALHO_EMAL_USUARIO As label:
+        Align: =Align.Right
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =30
+        Text: =UsuáriosdoOffice365.MyProfile().Mail
+        VerticalAlign: =VerticalAlign.Top
+        Width: =415
+        X: |-
+            =If(
+                COMP_TITULO_BTN_INICIO.Visible,
+                835,
+                893
+            )
+        Y: =20
+        ZIndex: =6
+
+    PE_CABECALHO_NOME_USUARIO As label:
+        Align: =Align.Right
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =30
+        Text: =UsuáriosdoOffice365.MyProfile().GivenName
+        VerticalAlign: =VerticalAlign.Bottom
+        Width: =415
+        X: |-
+            =If(
+                COMP_TITULO_BTN_INICIO.Visible,
+                835,
+                893
+            )
+        ZIndex: =7
+

@@ -1,0 +1,1352 @@
+SOLICITACAO As screen:
+    BackgroundImage: =FUNDO_YDUQS
+    ImagePosition: =ImagePosition.Fill
+    OnVisible: |-
+        =Refresh(A_GABE_V_DIRETORIA);
+        Select(SL_FUNCAO_VERSAO_MANUTENCAO)
+
+    SL_COMP_TITULO As COMP_TITULO:
+        VAR_NOME_PAGINA: ="Solicitação"
+        VAR_ONSELECT_INICIO: =INICIO
+        VAR_ONSELECT_VOLTAR: =INICIO
+
+    SL_CT_FUNDO As groupContainer.manualLayoutContainer:
+        BorderStyle: =BorderStyle.None
+        Fill: =RGBA(237, 237, 237, 0.9)
+        Height: =638
+        RadiusBottomLeft: =10
+        RadiusBottomRight: =10
+        RadiusTopLeft: =10
+        RadiusTopRight: =10
+        Width: =1323
+        X: =22
+        Y: =65
+        ZIndex: =2
+
+        SL_CT_FORM As form:
+            DataSource: =A_GABE_D_SOLICITACAO
+            DefaultMode: =FormMode.New
+            Height: =541
+            NumberOfColumns: =1
+            SnapToColumns: =false
+            Width: =1285
+            X: =22
+            Y: =27
+            ZIndex: =1
+
+            SL_CT_FORM_NOM_ALUNO_DATACARD As typedDataCard.textualEditCard:
+                BorderStyle: =BorderStyle.None
+                DataField: ="NOM_ALUNO"
+                Default: =ThisItem.NOM_ALUNO
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="Nome colaborador:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                MaxLength: =DataSourceInfo([@A_GABE_D_SOLICITACAO], DataSourceInfo.MaxLength, "NOM_ALUNO")
+                Required: =true
+                Update: =SL_CT_FORM_NOM_ALUNO_DATACARD_VALUE.Text
+                Width: =500
+                X: =0
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey1 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                SL_CT_FORM_NOM_ALUNO_DATACARD_VALUE As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    Clear: =true
+                    Default: =Parent.Default
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    MaxLength: =Parent.MaxLength
+                    PaddingLeft: =5
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey1.Y + DataCardKey1.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage1 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =SL_CT_FORM_NOM_ALUNO_DATACARD_VALUE.Y + SL_CT_FORM_NOM_ALUNO_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible1 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey1.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey1.Y
+                    ZIndex: =4
+
+            SL_CT_FORM_CPF_ALUNO_DATACARD As typedDataCard.numberEditCard:
+                BorderStyle: =BorderStyle.None
+                DataField: ="CPF_ALUNO"
+                Default: =ThisItem.CPF_ALUNO
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="CPF colaborador:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =true
+                Update: =Value(SL_CT_FORM_CPF_ALUNO_DATACARD_VALUE.Text)
+                Width: =220
+                X: =1
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey2 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                SL_CT_FORM_CPF_ALUNO_DATACARD_VALUE As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    Clear: =true
+                    Default: =Parent.Default
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Format: =TextFormat.Number
+                    MaxLength: =11
+                    PaddingLeft: =5
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey2.Y + DataCardKey2.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage2 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =SL_CT_FORM_CPF_ALUNO_DATACARD_VALUE.Y + SL_CT_FORM_CPF_ALUNO_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible2 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey2.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey2.Y
+                    ZIndex: =4
+
+            SL_CT_FORM_MATRICULA_DATACARD As typedDataCard.numberEditCard:
+                BorderStyle: =BorderStyle.None
+                DataField: ="MATRICULA"
+                Default: =ThisItem.COD_MATRICULA
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="Matrícula SIA / Inscrição:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =true
+                Update: =Value(SL_CT_FORM_MATRICULA_DATACARD_VALUE.Text)
+                Width: =285
+                X: =2
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                SL_CT_FORM_MATRICULA_DATACARD_VALUE As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    Clear: =true
+                    Default: =Parent.Default
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Format: =TextFormat.Number
+                    MaxLength: =12
+                    PaddingLeft: =5
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey3.Y + DataCardKey3.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage3 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =SL_CT_FORM_MATRICULA_DATACARD_VALUE.Y + SL_CT_FORM_MATRICULA_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible3 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey3.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey3.Y
+                    ZIndex: =4
+
+            SL_CT_FORM_MATRICULA_FUNCIONAL_DATACARD As typedDataCard.numberEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="MATRICULA_FUNCIONAL"
+                Default: =ThisItem.MATRICULA_FUNCIONAL
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="Matrícula Funcional:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =true
+                Update: =Value(SL_CT_FORM_MATRICULA_FUNCIONAL_DATACARD_VALUE.Text)
+                Width: =280
+                X: =3
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey7 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                SL_CT_FORM_MATRICULA_FUNCIONAL_DATACARD_VALUE As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    Default: =Parent.Default
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Format: =TextFormat.Number
+                    MaxLength: =9
+                    PaddingLeft: =5
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey7.Y + DataCardKey7.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage7 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =SL_CT_FORM_MATRICULA_FUNCIONAL_DATACARD_VALUE.Y + SL_CT_FORM_MATRICULA_FUNCIONAL_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible7 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey7.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey7.Y
+                    ZIndex: =4
+
+            SL_CT_FORM_NOM_TIPO_CURSO_DATACARD As typedDataCard.textualEditCard:
+                BorderStyle: =BorderStyle.None
+                DataField: ="NOM_TIPO_CURSO"
+                Default: =ThisItem.NOM_TIPO_CURSO
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="Tipo curso:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                MaxLength: =DataSourceInfo([@A_GABE_D_SOLICITACAO], DataSourceInfo.MaxLength, "NOM_TIPO_CURSO")
+                Required: =true
+                Update: =SL_CT_FORM_NOM_TIPO_CURSO_DATACARD_VALUE.Selected.Value
+                Width: =250
+                X: =0
+                Y: =1
+                ZIndex: =1
+
+                DataCardKey4 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                ErrorMessage4 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =SL_CT_FORM_NOM_TIPO_CURSO_DATACARD_VALUE.Y + SL_CT_FORM_NOM_TIPO_CURSO_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible4 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey4.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey4.Y
+                    ZIndex: =4
+
+                SL_CT_FORM_NOM_TIPO_CURSO_DATACARD_VALUE As combobox:
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    ChevronBackground: =RGBA(0, 28, 67, 1)
+                    DisplayFields: =["Value"]
+                    InputTextPlaceholder: =""
+                    IsSearchable: =false
+                    Items: =["GRADUAÇÃO","PÓS"]
+                    SearchFields: =["Value"]
+                    SearchItems: =[]
+                    SelectMultiple: =false
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey4.Y + DataCardKey4.Height + 5
+                    ZIndex: =5
+
+            SL_CT_FORM_NOM_MARCA_DATACARD As typedDataCard.textualEditCard:
+                BorderStyle: =BorderStyle.None
+                DataField: ="NOM_MARCA"
+                Default: =ThisItem.NOM_MARCA
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="Marca:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                MaxLength: =DataSourceInfo([@A_GABE_D_SOLICITACAO], DataSourceInfo.MaxLength, "NOM_MARCA")
+                Required: =true
+                Update: =SL_CT_FORM_NOM_MARCA_DATACARD_VALUE.Selected.Value
+                Width: =250
+                X: =1
+                Y: =1
+                ZIndex: =1
+
+                DataCardKey5 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                ErrorMessage5 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =SL_CT_FORM_NOM_MARCA_DATACARD_VALUE.Y + SL_CT_FORM_NOM_MARCA_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible5 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey5.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey5.Y
+                    ZIndex: =4
+
+                SL_CT_FORM_NOM_MARCA_DATACARD_VALUE As combobox:
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    ChevronBackground: =RGBA(0, 28, 67, 1)
+                    DisplayFields: =["Value"]
+                    InputTextPlaceholder: =""
+                    IsSearchable: =false
+                    Items: |-
+                        =Sort(
+                            Distinct(
+                                A_GABE_D_MARCA,
+                                NOM_MARCA
+                            ),
+                            Value
+                        )
+                    SearchFields: =["Value"]
+                    SearchItems: =[]
+                    SelectMultiple: =false
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey5.Y + DataCardKey5.Height + 5
+                    ZIndex: =5
+
+            SL_CT_FORM_ID_DIRETORIA_DATACARD As typedDataCard.numberEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="ID_DIRETORIA"
+                Default: =ThisItem.ID_DIRETORIA
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="Diretoria: "
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =true
+                Update: =Value(SL_CT_FORM_ID_DIRETORIA_DATACARD_VALUE.Selected.ID_DIRETORIA)
+                Width: =505
+                X: =2
+                Y: =1
+                ZIndex: =1
+
+                DataCardKey24 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                ErrorMessage16 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =SL_CT_FORM_ID_DIRETORIA_DATACARD_VALUE.Y + SL_CT_FORM_ID_DIRETORIA_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible16 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey24.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey24.Y
+                    ZIndex: =4
+
+                SL_CT_FORM_ID_DIRETORIA_DATACARD_VALUE As combobox:
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    ChevronBackground: =RGBA(0, 28, 67, 1)
+                    DisplayFields: =["NOM_DIRETORIA"]
+                    InputTextPlaceholder: =""
+                    Items: |-
+                        =Sort(
+                            A_GABE_D_DIRETORIA,
+                            NOM_DIRETORIA,
+                            SortOrder.Ascending
+                        )
+                    SearchFields: =["NOM_DIRETORIA"]
+                    SearchItems: |-
+                        =Search(Sort(
+                            A_GABE_D_DIRETORIA,
+                            NOM_DIRETORIA,
+                            SortOrder.Ascending
+                        ),SL_CT_FORM_ID_DIRETORIA_DATACARD_VALUE.SearchText,"NOM_DIRETORIA")
+                    SelectMultiple: =false
+                    Size: =11
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =48
+                    ZIndex: =5
+
+            SL_CT_FORM_IND_COLABORADOR_DATACARD As typedDataCard.toggleEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="IND_COLABORADOR"
+                Default: =ThisItem.IND_COLABORADOR
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: ="Colaborador ?"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =false
+                Update: =SL_CT_FORM_IND_COLABORADOR_DATACARD_VALUE.Value
+                Visible: =false
+                Width: =200
+                X: =3
+                Y: =1
+                ZIndex: =1
+
+                DataCardKey10 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                SL_CT_FORM_IND_COLABORADOR_DATACARD_VALUE As toggleSwitch:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    Default: =Parent.Default
+                    DisplayMode: =Parent.DisplayMode
+                    FalseText: ="Não"
+                    Tooltip: =Parent.DisplayName
+                    TrueFill: =RGBA(99, 139, 44, 1)
+                    TrueText: ="Sim"
+                    Width: =100
+                    X: =30
+                    Y: =DataCardKey10.Y + DataCardKey10.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage10 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =SL_CT_FORM_IND_COLABORADOR_DATACARD_VALUE.Y + SL_CT_FORM_IND_COLABORADOR_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible10 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey10.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey10.Y
+                    ZIndex: =4
+
+            SL_CT_FORM_PERCENTUAL_DATACARD As typedDataCard.numberEditCard:
+                BorderStyle: =BorderStyle.None
+                DataField: ="PERCENTUAL"
+                Default: =ThisItem.PCT
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="Percentual %:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =true
+                Update: =Value(SL_CT_FORM_PERCENTUAL_DATACARD_VALUE.Text)
+                Width: =250
+                X: =0
+                Y: |
+                    =2
+                ZIndex: =1
+
+                DataCardKey6 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                SL_CT_FORM_PERCENTUAL_DATACARD_VALUE As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    Default: |-
+                        =//Parent.Default
+                        100
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Format: =TextFormat.Number
+                    MaxLength: =3
+                    PaddingLeft: =5
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey6.Y + DataCardKey6.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage6 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =SL_CT_FORM_PERCENTUAL_DATACARD_VALUE.Y + SL_CT_FORM_PERCENTUAL_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible6 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey6.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey6.Y
+                    ZIndex: =4
+
+            SL_CT_FORM_DT_INICIO_DATACARD As typedDataCard.dateEditCard:
+                BorderStyle: =BorderStyle.None
+                DataField: ="DT_INICIO"
+                Default: =ThisItem.DT_INICIO
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="Data início:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =false//Self.Visible
+                Update: =Date(SL_CT_FORM_DT_INICIO_DATACARD_ANO_DATACARD_VALUE.Selected.Value,SL_CT_FORM_DT_INICIO_DATACARD_MES_DATACARD_VALUE.Selected.ID_MES,"01")
+                Visible: =true
+                Width: =321
+                X: =1
+                Y: =2
+                ZIndex: =1
+
+                DataCardKey9 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                ErrorMessage9 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =
+                    ZIndex: =3
+
+                StarVisible9 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey9.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey9.Y
+                    ZIndex: =4
+
+                SL_CT_FORM_DT_INICIO_DATACARD_MES_DATACARD_VALUE As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    ChevronBackground: =RGBA(0, 28, 67, 1)
+                    Default: =Parent.Default
+                    DisplayMode: =Parent.DisplayMode
+                    Items: =CLC_MES
+                    OnChange: =Select(SL_CT_FUNDO_FUNCAO_DT_FIM)
+                    Size: =12
+                    Tooltip: =Parent.DisplayName
+                    Width: =152
+                    X: =30
+                    Y: =49
+                    ZIndex: =5
+
+                SL_CT_FORM_DT_INICIO_DATACARD_ANO_DATACARD_VALUE As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    ChevronBackground: =RGBA(0, 28, 67, 1)
+                    Color: =RGBA(0,0,0,1)
+                    Default: =Parent.Default
+                    DisplayMode: =Parent.DisplayMode
+                    Items: =CLC_ANO
+                    OnChange: =Select(SL_CT_FUNDO_FUNCAO_DT_FIM)
+                    Size: =12
+                    Tooltip: =Parent.DisplayName
+                    Width: =99
+                    X: =193
+                    Y: =49
+                    ZIndex: =6
+
+            SL_CT_FORM_DT_FIM_DATACARD As typedDataCard.dateEditCard:
+                BorderStyle: =BorderStyle.None
+                DataField: ="DT_FIM"
+                Default: =ThisItem.DT_FIM
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="Data fim:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =true
+                Update: |-
+                    =If(
+                        SL_CT_FORM_IND_CURSO_TODO_DATACARD.Update = false,
+                        SL_CT_FORM_DT_FIM_DATACARD_MES_DATACARD_VALUE.Selected.DT,
+                        Text(Now(), "dd/mm/yyyy")
+                    )
+                Visible: =!SL_CT_FORM_IND_CURSO_TODO_DATACARD.Update && SL_CT_FORM_DT_INICIO_DATACARD.Valid
+                Width: =321
+                X: =2
+                Y: =2
+                ZIndex: =1
+
+                DataCardKey8 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                ErrorMessage8 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =
+                    ZIndex: =3
+
+                StarVisible8 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey8.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey8.Y
+                    ZIndex: =4
+
+                SL_CT_FORM_DT_FIM_DATACARD_MES_DATACARD_VALUE As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    ChevronBackground: =RGBA(0, 28, 67, 1)
+                    Default: =
+                    DisplayMode: =Parent.DisplayMode
+                    Items: =AddColumns(CLC_CT_DT_FIM,"VIGENCIA",LookUp(CLC_MES As M,M.ID_MES = ID_MES).MES&"/"&ANO)
+                    Size: =12
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =49
+                    ZIndex: =5
+
+            SL_CT_FORM_IND_CURSO_TODO_DATACARD As typedDataCard.toggleEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="IND_CURSO_TODO"
+                Default: =ThisItem.IND_CURSO_TODO
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="Curso todo:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =50
+                Required: =false
+                Update: =SL_CT_FORM_IND_CURSO_TODO_DATACARD_VALUE.Value
+                Width: =321
+                X: =3
+                Y: =2
+                ZIndex: =1
+
+                DataCardKey23 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                SL_CT_FORM_IND_CURSO_TODO_DATACARD_VALUE As toggleSwitch:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    Default: =Parent.Default
+                    DisplayMode: =Parent.DisplayMode
+                    FalseText: ="Não"
+                    Tooltip: =Parent.DisplayName
+                    TrueFill: =RGBA(0, 28, 67, 1)
+                    TrueText: ="Sim"
+                    Width: =100
+                    X: =30
+                    Y: =DataCardKey23.Y + DataCardKey23.Height + 13
+                    ZIndex: =2
+
+                ErrorMessage15 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =SL_CT_FORM_IND_CURSO_TODO_DATACARD_VALUE.Y + SL_CT_FORM_IND_CURSO_TODO_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible15 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey23.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey23.Y
+                    ZIndex: =4
+
+            SL_CT_FORM_MOTIVO_DATACARD As typedDataCard.textualEditCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="MOTIVO"
+                Default: =ThisItem.MOTIVO
+                DisplayMode: =Parent.DisplayMode
+                DisplayName: |-
+                    ="Motivo:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =210
+                MaxLength: =DataSourceInfo([@A_GABE_D_SOLICITACAO], DataSourceInfo.MaxLength, "MOTIVO")
+                Required: =true
+                Update: =SL_CT_FORM_MOTIVO_DATACARD_VALUE.Text
+                Width: =1284
+                X: =0
+                Y: =11
+                ZIndex: =1
+
+                DataCardKey12 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                SL_CT_FORM_MOTIVO_DATACARD_VALUE As text:
+                    BorderColor: =If(IsBlank(Parent.Error), Parent.BorderColor, Color.Red)
+                    BorderStyle: =BorderStyle.None
+                    BorderThickness: =0
+                    Clear: =true
+                    Default: =Parent.Default
+                    DelayOutput: =true
+                    DisplayMode: =Parent.DisplayMode
+                    EnableSpellCheck: =true
+                    Height: =128
+                    MaxLength: =Parent.MaxLength
+                    Mode: =TextMode.MultiLine
+                    PaddingLeft: =5
+                    RadiusBottomLeft: =0
+                    RadiusBottomRight: =0
+                    RadiusTopLeft: =0
+                    RadiusTopRight: =0
+                    Tooltip: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey12.Y + DataCardKey12.Height + 5
+                    ZIndex: =2
+
+                ErrorMessage12 As label:
+                    AutoHeight: =true
+                    Height: =10
+                    Live: =Live.Assertive
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Error
+                    Visible: =Parent.DisplayMode=DisplayMode.Edit
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =SL_CT_FORM_MOTIVO_DATACARD_VALUE.Y + SL_CT_FORM_MOTIVO_DATACARD_VALUE.Height
+                    ZIndex: =3
+
+                StarVisible12 As label:
+                    Align: =Align.Center
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =DataCardKey12.Height
+                    Text: ="*"
+                    Visible: =And(Parent.Required, Parent.DisplayMode=DisplayMode.Edit)
+                    Width: =30
+                    Wrap: =false
+                    Y: =DataCardKey12.Y
+                    ZIndex: =4
+
+        SL_CT_FUNDO_BTN_SALVAR As button:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            DisplayMode: |-
+                =If(
+                    SL_CT_FORM.Valid && !SL_CT_FUNDO_AVISO_VIGENCIA.Visible && !SL_CT_FUNDO_AVISO_QTD_BOLSA.Visible,
+                    DisplayMode.Edit,
+                    DisplayMode.Disabled
+                )
+            Fill: =RGBA(0, 166, 90, 1)
+            OnSelect: |-
+                =UpdateContext({VLC_SL_POPUP_CONF: true})
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Enviar"
+            X: =1116
+            Y: =568
+            ZIndex: =2
+
+        SL_CT_FUNDO_BTN_CANCELAR As button:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            Fill: =RGBA(220, 53, 69, 1)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =ResetForm(SL_CT_FORM)
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Cancelar"
+            X: =932
+            Y: =568
+            ZIndex: =3
+
+        SL_CT_FUNDO_AVISO_VIGENCIA As label:
+            Align: =Align.Center
+            Color: =RGBA(168, 0, 0, 1)
+            Text: =If(SL_CT_FORM_DT_FIM_DATACARD.Update < SL_CT_FORM_DT_INICIO_DATACARD.Update,"Vigência incorreta !")
+            Visible: =Len(Self.Text) > 1 && SL_CT_FORM_DT_INICIO_DATACARD.Valid && SL_CT_FORM_DT_FIM_DATACARD.Valid && !SL_CT_FORM_IND_CURSO_TODO_DATACARD.Update 
+            Width: =425
+            X: =388
+            Y: =320
+            ZIndex: =5
+
+        SL_CT_FUNDO_AVISO_QTD_BOLSA As label:
+            Color: =RGBA(168, 0, 0, 1)
+            Height: =86
+            Text: |-
+                =Switch(
+                    LookUp(
+                        A_GABE_V_DIRETORIA,
+                        ID_DIRETORIA = SL_CT_FORM_ID_DIRETORIA_DATACARD_VALUE.Selected.ID_DIRETORIA && 
+                        ANO = Year(SL_CT_FORM_DT_FIM_DATACARD.Update)
+                    ).IND_DISPONIVEL,
+                    1,"",
+                    0,"Essa diretoria não possui quantidade de bolsas suficiente, consulte sua BP!",
+                    ""
+                )
+            Visible: =Len(Self.Text) > 1
+            Width: =309
+            X: =1006
+            Y: =148
+            ZIndex: =6
+
+        SL_CT_FUNDO_FUNCAO_DT_FIM As button:
+            OnSelect: |-
+                =With(
+                    {VAR_DT_INICIO: SL_CT_FORM_DT_INICIO_DATACARD.Update},
+                    ClearCollect(
+                        CLC_CT_DT_FIM,
+                        Table(
+                            {DT: DateAdd(VAR_DT_INICIO,0,TimeUnit.Months),ID_MES:Month(DateAdd(VAR_DT_INICIO,0,TimeUnit.Months)),ANO:Year(DateAdd(VAR_DT_INICIO,0,TimeUnit.Months))},
+                            {DT: DateAdd(VAR_DT_INICIO,1,TimeUnit.Months),ID_MES:Month(DateAdd(VAR_DT_INICIO,1,TimeUnit.Months)),ANO:Year(DateAdd(VAR_DT_INICIO,1,TimeUnit.Months))},
+                            {DT: DateAdd(VAR_DT_INICIO,2,TimeUnit.Months),ID_MES:Month(DateAdd(VAR_DT_INICIO,2,TimeUnit.Months)),ANO:Year(DateAdd(VAR_DT_INICIO,2,TimeUnit.Months))},
+                            {DT: DateAdd(VAR_DT_INICIO,3,TimeUnit.Months),ID_MES:Month(DateAdd(VAR_DT_INICIO,3,TimeUnit.Months)),ANO:Year(DateAdd(VAR_DT_INICIO,3,TimeUnit.Months))},
+                            {DT: DateAdd(VAR_DT_INICIO,4,TimeUnit.Months),ID_MES:Month(DateAdd(VAR_DT_INICIO,4,TimeUnit.Months)),ANO:Year(DateAdd(VAR_DT_INICIO,4,TimeUnit.Months))},
+                            {DT: DateAdd(VAR_DT_INICIO,5,TimeUnit.Months),ID_MES:Month(DateAdd(VAR_DT_INICIO,5,TimeUnit.Months)),ANO:Year(DateAdd(VAR_DT_INICIO,5,TimeUnit.Months))}
+                        )
+                    )
+                )
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =11
+            Text: ="FUNCAO_DT_FIM"
+            Visible: =false
+            X: =58
+            Y: =568
+            ZIndex: =7
+
+    SL_POPUP_CONF As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =768
+        Visible: =VLC_SL_POPUP_CONF
+        Width: =1366
+        ZIndex: =3
+
+        SL_POPUP_CONF_DESCRICAO As button:
+            BorderThickness: =1
+            Color: =RGBA(0, 0, 0, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(237, 237, 237, 1)
+            Height: =241
+            PaddingLeft: =0
+            PaddingTop: =0
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Deseja realmente enviar solicitação?"
+            Width: =576
+            X: =395
+            Y: =264
+            ZIndex: =1
+
+        SL_POPUP_CONF_BTN_SIM As button:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            Fill: =RGBA(0, 166, 90, 1)
+            FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =UpdateContext({VLC_LOADING: true});
+                UpdateContext(
+                    {
+                        VLC_SOLICITACAO: Patch(
+                            A_GABE_D_SOLICITACAO,
+                            Defaults(A_GABE_D_SOLICITACAO),
+                            {
+                                LOTE: Int(Text(Now(),"yymmddhhmmss") & Round(Rand() * 100,0)),
+                                IND_LOTE: 0,
+                                EMAIL_USUARIO: VGB_USUARIO_LOGADO_EMAIL,
+                                COD_MATRICULA: SL_CT_FORM_MATRICULA_DATACARD.Update,
+                                NOM_ALUNO: Upper(SL_CT_FORM_NOM_ALUNO_DATACARD.Update),
+                                CPF_ALUNO: SL_CT_FORM_CPF_ALUNO_DATACARD.Update,
+                                NOM_TIPO_CURSO: SL_CT_FORM_NOM_TIPO_CURSO_DATACARD.Update,
+                                NOM_MARCA: SL_CT_FORM_NOM_MARCA_DATACARD.Update,
+                                DT_INICIO: SL_CT_FORM_DT_INICIO_DATACARD.Update,
+                                DT_FIM: If(
+                                    SL_CT_FORM_IND_CURSO_TODO_DATACARD.Update = true, 
+                                    Blank(),
+                                    /*If(
+                                        Month(SL_CT_FORM_DT_FIM_DATACARD.Update) >= 1 && Month(SL_CT_FORM_DT_FIM_DATACARD.Update) <= 6;
+                                        Date(Year(SL_CT_FORM_DT_FIM_DATACARD.Update);6;1);
+                                        Date(Year(SL_CT_FORM_DT_FIM_DATACARD.Update);12;1)
+                                    );*/
+                                    SL_CT_FORM_DT_INICIO_DATACARD.Update
+                                ),
+                                PCT: SL_CT_FORM_PERCENTUAL_DATACARD.Update,
+                                MOTIVO: SL_CT_FORM_MOTIVO_DATACARD.Update,
+                                IND_COLABORADOR: SL_CT_FORM_IND_COLABORADOR_DATACARD.Update,
+                                IND_CURSO_TODO: SL_CT_FORM_IND_CURSO_TODO_DATACARD.Update,
+                                ID_SOLICITACAO_TIPO: VGB_IN_ID_SOLICITACAO_TIPO,
+                                MATRICULA_FUNCIONAL:SL_CT_FORM_MATRICULA_FUNCIONAL_DATACARD.Update,
+                                ID_DIRETORIA: SL_CT_FORM_ID_DIRETORIA_DATACARD.Update,
+                                DT_REFERENCIA: Now()
+                            }
+                        )
+                    }
+                );
+                If(
+                    IsEmpty(Errors(A_GABE_D_SOLICITACAO)),
+                    Refresh(A_GABE_D_SOLICITACAO);
+                    Refresh(A_GABE_V_FLUXO_APROVACAO_EMAIL);
+                    With({
+                        VAR_EMAIL_DESTINATARIO: LookUp(A_GABE_V_FLUXO_APROVACAO_EMAIL,ID_SOLICITACAO_TIPO = VLC_SOLICITACAO.ID_SOLICITACAO_TIPO).EMAIL_USUARIO
+                    },
+                    Patch(
+                        A_GABE_D_SOLICITACAO_EMAIL,Defaults(A_GABE_D_SOLICITACAO_EMAIL),
+                        {
+                            LOTE: VLC_SOLICITACAO.LOTE,
+                            ID_SOLICITACAO: VLC_SOLICITACAO.ID_SOLICITACAO,
+                            TITULO: "[GABe] ["&VLC_SOLICITACAO.LOTE&"] Solicitação de bolsa para aprovação",
+                            REMETENTE: VGB_USUARIO_LOGADO_EMAIL,
+                            DESTINATARIO: VAR_EMAIL_DESTINATARIO,
+                            CORPO: SL_EMAIL_HTML.HtmlText,
+                            DT_REFERENCIA: VLC_SOLICITACAO.DT_REFERENCIA,
+                            IND_ENVIADO: 0
+                        })
+                    );
+                    NewForm(SL_CT_FORM);
+                    ResetForm(SL_CT_FORM);
+                    Notify(
+                        "Solicitação enviada com suscesso !",
+                        NotificationType.Success,
+                        3000
+                    ),
+                    Notify(
+                        "Ocorreu um erro, tente novamente !",
+                        NotificationType.Error,
+                        3000
+                    )
+                );
+                Select(SL_POPUP_CONF_BTN_FECHAR);
+                Navigate(INICIO,ScreenTransition.Fade);
+                UpdateContext({VLC_LOADING: false})
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Sim"
+            Visible: =true//vPPConfirmaBolsa
+            X: =510
+            Y: =435
+            ZIndex: =2
+
+        SL_POPUP_CONF_BTN_NAO As button:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            Fill: =RGBA(221, 75, 57, 1)
+            FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Select(SL_POPUP_CONF_BTN_FECHAR)
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Não"
+            Visible: =true//vPPConfirmaBolsa
+            X: =695
+            Y: =435
+            ZIndex: =3
+
+        SL_POPUP_CONF_CONF_TITULO As button:
+            BorderThickness: =1
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(0, 28, 67, 1)
+            Height: =50
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =16
+            Text: ="Confirmação"
+            Width: =576
+            X: =395
+            Y: =264
+            ZIndex: =4
+
+        SL_POPUP_CONF_BTN_FECHAR As icon.CancelBadge:
+            BorderStyle: =BorderStyle.None
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =35
+            Icon: =Icon.CancelBadge
+            OnSelect: |-
+                =UpdateContext({VLC_SL_POPUP_CONF: false})
+            Visible: =true//vPPConfirmaBolsa
+            Width: =35
+            X: =921
+            Y: =271
+            ZIndex: =5
+
+    SL_COMP_LOADING As COMP_LOADING:
+        Visible: =VLC_LOADING
+        ZIndex: =4
+
+    SL_EMAIL_HTML As htmlViewer:
+        Height: =326
+        HtmlText: |-
+            ="
+            Prezado(a),<br><br>
+            Você possui uma solicitação de bolsa para aprovação, acesse o link <a href='https://nam10.safelinks.protection.outlook.com/?url=https%3A%2F%2Fapps.powerapps.com%2Fplay%2Fe%2Fd46c5c55-f92c-eab8-8606-e4ecf7727302%2Fa%2Fe0a2fee8-c0fd-4927-b436-645440011c2e%3FtenantId%3D29e081cc-983f-4d52-b1d0-103595213bc6%26hint%3D78e73437-a41e-4e53-a8c2-618c64b3ade7%26sourcetime%3D2023-08-24%252019%253A27%253A45Z&data=05%7C01%7Cyuri.alves%40estacio.br%7C8ce4e8add2134d62579508dbad916081%7C29e081cc983f4d52b1d0103595213bc6%7C1%7C0%7C638294612110246545%7CUnknown%7CTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7C3000%7C%7C%7C&sdata=cz%2FV3eFlRlfLogKlGGXA9SSWnu1z0UZ41v9SoBy56Rk%3D&reserved=0'><b>GABe</b></a>.<br><br>
+            
+            <b>Detalhe:</b><br>
+            Lote: "&VLC_SOLICITACAO.LOTE&"<br>
+            Nome: "&Proper(VLC_SOLICITACAO.NOM_ALUNO)&"<br>
+            Tipo Curso: "&Proper(VLC_SOLICITACAO.NOM_TIPO_CURSO)&"<br>
+            Marca: "&Proper(VLC_SOLICITACAO.NOM_MARCA)&"<br>
+            Percentual: "&VLC_SOLICITACAO.PCT&"
+            <br><br>
+            Att,<br>
+            <b>Aplicações e Automações</b><br>
+            Diretoria de Pricing e Produtos"
+        Visible: =false
+        Width: =315
+        X: =1028
+        Y: =194
+        ZIndex: =5
+
+    SL_FUNCAO_VERSAO_MANUTENCAO As button:
+        BorderStyle: =BorderStyle.None
+        BorderThickness: =0
+        Height: =30
+        OnSelect: |-
+            =UpdateContext({VLC_LOADING: true});
+            //Verifica a versão
+            Refresh(A_AA_D_MANUTENCAO);
+            ClearCollect(CLC_A_AA_D_MANUTENCAO,LookUp(A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO));
+            If(Trim(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).VERSAO) = VGB_VERSAO,Set(VGB_POPUP_VERSAO, false),Set(VGB_POPUP_VERSAO, true));
+            //Verifica o status manutenção/atualização
+            If(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).IND_STATUS > 0,Set(VGB_POPUP_MANUTENCAO, true),Set(VGB_POPUP_MANUTENCAO, false));
+            UpdateContext({VLC_LOADING: false})
+        Text: ="FUNCAO_VERSAO_MANUTENCAO"
+        Visible: =false
+        Width: =331
+        X: =568
+        Y: =10
+        ZIndex: =6
+
+    SL_COMP_MANUTENCAO As COMP_MANUTENCAO:
+        VAR_DESCRICAO: |-
+            =Switch(
+                First(CLC_A_AA_D_MANUTENCAO).IND_STATUS,
+                1,"Sistema em manutenção",
+                2,"Sistema em atualização"
+            )
+        VAR_DESCRICAO_STATUS: =First(CLC_A_AA_D_MANUTENCAO).DESCRICAO_STATUS
+        Visible: =VGB_POPUP_MANUTENCAO
+        ZIndex: =7
+
+    SL_COMP_VERSAO As COMP_VERSAO:
+        Visible: =VGB_POPUP_VERSAO
+        ZIndex: =8
+

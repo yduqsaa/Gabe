@@ -1,0 +1,1793 @@
+APROVACAO As screen:
+    BackgroundImage: =FUNDO_YDUQS
+    ImagePosition: =ImagePosition.Stretch
+    OnVisible: |-
+        =Refresh(A_GABE_V_FLUXO);
+        Reset(AA_CT_FUNDO_FILTRO_CB_STATUS_FLUXO);
+        Reset(AA_CT_FUNDO_FILTRO_CB_MINHA_APROVACAO);
+        Select(AA_FUNCAO_VERSAO_MANUTENCAO)
+
+    AA_COMP_TITULO As COMP_TITULO:
+        VAR_NOME_PAGINA: ="Aprovações"
+        VAR_ONSELECT_INICIO: =INICIO
+        VAR_ONSELECT_VOLTAR: =INICIO
+        ZIndex: =2
+
+    AA_CT_FUNDO As groupContainer.manualLayoutContainer:
+        BorderStyle: =BorderStyle.None
+        Fill: =RGBA(237, 237, 237, 0.9)
+        Height: =638
+        RadiusBottomLeft: =10
+        RadiusBottomRight: =10
+        RadiusTopLeft: =10
+        RadiusTopRight: =10
+        Width: =1323
+        X: =22
+        Y: =65
+        ZIndex: =3
+
+        "AA_CT_FUNDO_GALL As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+            BorderStyle: =BorderStyle.None
+            Height: =424
+            Items: |-
+                =If(
+                    VGB_USUARIO_LOGADO_PERFIL.NOM_USUARIO_TIPO in 
+                        [
+                            "Remuneração e Benefícios - Gestão",
+                            "Remuneração e Benefícios - Solicitante"
+                        ],
+                    SortByColumns(
+                        If(
+                            AA_CT_FUNDO_FILTRO_CB_MINHA_APROVACAO.Value = true,
+                            Filter(
+                                A_GABE_V_FLUXO,
+                                (COD_MATRICULA = Int(AA_CT_FUNDO_FILTRO_MATRICULA.Text) || 
+                                LOTE = Int(AA_CT_FUNDO_FILTRO_MATRICULA.Text) || 
+                                IsBlank(AA_CT_FUNDO_FILTRO_MATRICULA.Text)) && 
+                                (STATUS_FLUXO = AA_CT_FUNDO_FILTRO_CB_STATUS_FLUXO.Selected.Value || IsBlank(AA_CT_FUNDO_FILTRO_CB_STATUS_FLUXO.Selected)) &&
+                                EMAIL_USUARIO_APROVADOR = VGB_USUARIO_LOGADO_EMAIL),
+                            Filter(
+                                A_GABE_V_FLUXO,
+                                (COD_MATRICULA = Int(AA_CT_FUNDO_FILTRO_MATRICULA.Text) || 
+                                LOTE = Int(AA_CT_FUNDO_FILTRO_MATRICULA.Text) || 
+                                IsBlank(AA_CT_FUNDO_FILTRO_MATRICULA.Text)) && 
+                                (STATUS_FLUXO = AA_CT_FUNDO_FILTRO_CB_STATUS_FLUXO.Selected.Value || IsBlank(AA_CT_FUNDO_FILTRO_CB_STATUS_FLUXO.Selected))
+                        )),            
+                        "ID_SOLICITACAO",SortOrder.Descending
+                    ),
+                    SortByColumns(
+                    Filter(
+                        A_GABE_V_FLUXO,
+                            (COD_MATRICULA = Int(AA_CT_FUNDO_FILTRO_MATRICULA.Text) || 
+                             LOTE = Int(AA_CT_FUNDO_FILTRO_MATRICULA.Text) || 
+                             IsBlank(AA_CT_FUNDO_FILTRO_MATRICULA.Text)) && 
+                        (STATUS_FLUXO = AA_CT_FUNDO_FILTRO_CB_STATUS_FLUXO.Selected.Value || IsBlank(AA_CT_FUNDO_FILTRO_CB_STATUS_FLUXO.Selected)) && 
+                        EMAIL_USUARIO_APROVADOR = VGB_USUARIO_LOGADO_EMAIL
+                    ),
+                        "ID_SOLICITACAO",SortOrder.Descending
+                    )
+                )
+            Layout: =Layout.Vertical
+            NavigationStep: =5
+            ShowNavigation: =true
+            ShowScrollbar: =false
+            TemplatePadding: =10
+            TemplateSize: =50
+            Width: =1323
+            Y: =165
+            ZIndex: =1
+
+            AA_CT_FUNDO_GALL_FUNDO As button:
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(39, 67, 125, 0.15)
+                Height: =50
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: =""
+                Width: =1303
+                ZIndex: =1
+
+            AA_CT_FUNDO_GALL_STATUS_FLUXO As label:
+                Align: =Align.Center
+                Color: =AA_CT_FUNDO_GALL_STATUS.Fill
+                FontWeight: =FontWeight.Bold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.STATUS_FLUXO
+                Tooltip: =ThisItem.STATUS_FLUXO
+                Width: =113
+                X: =675
+                ZIndex: =2
+
+            AA_CT_FUNDO_GALL_COD_MATRICULA As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.COD_MATRICULA
+                Width: =170
+                X: =30
+                ZIndex: =3
+
+            AA_CT_FUNDO_GALL_NOM_ALUNO As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.NOM_ALUNO
+                Width: =330
+                X: =200
+                ZIndex: =4
+
+            AA_CT_FUNDO_GALL_STATUS As button:
+                DisplayMode: =DisplayMode.View
+                Fill: |-
+                    =Switch(
+                        ThisItem.STATUS_FLUXO,
+                        "APROVADA", RGBA(118,161,58,1),
+                        "REPROVADA",RGBA(221, 75, 57, 1),
+                        RGBA(62,138,176,1)
+                    )
+                Height: =50
+                RadiusBottomLeft: =5
+                RadiusBottomRight: =5
+                RadiusTopLeft: =5
+                RadiusTopRight: =5
+                Text: =""
+                Tooltip: =Proper(ThisItem.STATUS_FLUXO)
+                Width: =30
+                ZIndex: =17
+
+            AA_CT_FUNDO_GALL_APROVADOR As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.EMAIL_USUARIO_APROVADOR
+                Tooltip: =
+                Width: =235
+                X: =788
+                ZIndex: =21
+
+            AA_CT_FUNDO_GALL_PCT As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: =ThisItem.PCT&"%"
+                Width: =50
+                X: =625
+                ZIndex: =22
+
+            AA_CT_FUNDO_GALL_VIGENCIA As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: |-
+                    =Right(ThisItem.DT_INICIO,7)&"
+                    "&Right(ThisItem.DT_FIM,7)
+                Width: =94
+                X: =531
+                ZIndex: =23
+
+            AA_CT_FUNDO_GALL_APROVACAO As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Semibold
+                Height: =50
+                OnSelect: =Select(Parent)
+                Size: =9
+                Text: |-
+                    =ThisItem.DT_REFERENCIA_SOLICITACAO&"
+                    "&If(IsBlank(ThisItem.DT_REFERENCIA),"-",ThisItem.DT_REFERENCIA)
+                Width: =145
+                X: =1023
+                ZIndex: =24
+
+            AA_CT_FUNDO_GALL_BTN_VIUALIZAR As icon.Add:
+                Color: =RGBA(25, 43, 75, 1)
+                DisabledColor: =RGBA(255, 255, 255, 1)
+                Height: =35
+                Icon: =Icon.View
+                OnSelect: |-
+                    =UpdateContext({VLC_LOADING: true});
+                    UpdateContext(
+                        {
+                            VLC_AA_POPUP_VIEW: true,
+                            VLC_AA_ID_SOLICITACAO: ThisItem.ID_SOLICITACAO,
+                            VLC_AA_IND_STATUS: ThisItem.IND_STATUS,
+                            VLC_AA_TIPO_FLUXO:ThisItem.TIPO_FLUXO,
+                            VLC_AA_NOM_USUARIO_TIPO_N1: ThisItem.NOM_USUARIO_TIPO_APROVADOR
+                        }
+                    );
+                    Refresh(A_GABE_V_FLUXO_STATUS);
+                    ClearCollect(CLC_AA_FLUXO_STATUS,
+                        ShowColumns(
+                            AddColumns(
+                                Filter(
+                                    A_GABE_V_FLUXO_STATUS,
+                                    ID_SOLICITACAO = VLC_AA_ID_SOLICITACAO
+                                ),
+                                "NOM_USUARIO_TIPO_APROVADOR_2",
+                                If(Len(NOM_USUARIO_TIPO_APROVADOR) > 0,NOM_USUARIO_TIPO_APROVADOR,UsuáriosdoOffice365.UserProfileV2(EMAIL_USUARIO_APROVADOR).jobTitle)
+                            ),
+                            "STATUS_FLUXO",
+                            "EMAIL_USUARIO_APROVADOR",
+                            "DT_REFERENCIA",
+                            "OBS",
+                            "NOM_USUARIO_TIPO_APROVADOR_2"
+                        )
+                    );
+                    UpdateContext({VLC_LOADING: false})
+                Tooltip: ="Selecionar"
+                Width: =35
+                X: =1168
+                Y: =8
+                ZIndex: =25
+
+            AA_CT_FUNDO_GALL_BTN_APROVAR As icon.Add:
+                Color: =RGBA(99, 139, 44, 1)
+                DisabledColor: =RGBA(255, 255, 255, 1)
+                DisplayMode: |-
+                    =If(
+                        ThisItem.STATUS_FLUXO in [
+                            "APROVADA",
+                            "REPROVADA"
+                        ] || ThisItem.EMAIL_USUARIO_APROVADOR <> VGB_USUARIO_LOGADO_EMAIL,
+                        DisplayMode.Disabled,
+                        DisplayMode.Edit
+                    )
+                Height: =35
+                Icon: =Icon.CheckBadge
+                OnSelect: |-
+                    =UpdateContext({VLC_LOADING: true});
+                    UpdateContext(
+                        {
+                            VLC_AA_APROVAR_CONF: true,
+                            VLC_AA_TIPO_FLUXO: ThisItem.TIPO_FLUXO,
+                            VLC_AA_ID_FLUXO_N2: ThisItem.ID_FLUXO_N2,
+                            VLC_AA_ID_SOLICITACAO: ThisItem.ID_SOLICITACAO,
+                            VLC_AA_LOTE: ThisItem.LOTE,
+                            VLC_AA_COD_MATRICULA: ThisItem.COD_MATRICULA,
+                            VLC_AA_NOM_ALUNO: ThisItem.NOM_ALUNO,
+                            VLC_AA_NOM_TIPO_CURSO: ThisItem.NOM_TIPO_CURSO,
+                            VLC_AA_NOM_MARCA: ThisItem.NOM_MARCA,
+                            VLC_AA_PCT: ThisItem.PCT,
+                            VLC_AA_DT_INICIO: ThisItem.DT_INICIO,
+                            VLC_AA_DT_FIM: ThisItem.DT_FIM,
+                            VLC_AA_IND_CURSO_TODO: ThisItem.IND_CURSO_TODO,
+                            VLC_AA_NOM_SOLICITACAO_TIPO: ThisItem.NOM_SOLICITACAO_TIPO,
+                            VLC_AA_EMAIL_USUARIO_SOLICITANTE: ThisItem.EMAIL_USUARIO_SOLICITANTE,
+                            VLC_AA_DT_REFERENCIA: ThisItem.DT_REFERENCIA_SOLICITACAO
+                          }
+                    );
+                    Refresh(A_GABE_V_FLUXO_APROVACAO);
+                    ClearCollect(
+                        CLC_AA_APROVADOR,
+                        {
+                            ID_USUARIO: Blank(),
+                            ID_USUARIO_TIPO: Blank(),
+                            EMAIL_USUARIO: "Não",
+                            NOM_USUARIO_AREA: Blank()
+                        }
+                    );
+                    If(
+                        ThisItem.TIPO_FLUXO = "N0",
+                        Collect(
+                            CLC_AA_APROVADOR,
+                            ShowColumns(
+                                A_GABE_V_FLUXO_APROVACAO,
+                                "ID_USUARIO",
+                                "ID_USUARIO_TIPO",
+                                "EMAIL_USUARIO",
+                                "NOM_USUARIO_AREA"
+                            )
+                        )
+                    );
+                    If(
+                        ThisItem.IND_LOTE = true,
+                        ClearCollect(
+                            CLC_SS_SOLICITACAO_LOTE,
+                            Filter(
+                                A_GABE_D_SOLICITACAO,
+                                LOTE = ThisItem.LOTE
+                            )
+                        )
+                    );
+                    If(
+                        ThisItem.TIPO_FLUXO = "N2",
+                        ClearCollect(
+                            CLC_SS_FLUXO_N2_LOTE,
+                            Filter(
+                                A_GABE_V_FLUXO_N2,
+                                LOTE = ThisItem.LOTE
+                            )
+                        )
+                    );
+                    UpdateContext({VLC_LOADING: false})
+                Tooltip: ="Aprovar"
+                Width: =35
+                X: =1212
+                Y: =8
+                ZIndex: =26
+
+            AA_CT_FUNDO_GALL_BTN_REPROVAR As icon.Add:
+                Color: =RGBA(186, 91, 91, 1)
+                DisabledColor: =RGBA(255, 255, 255, 1)
+                DisplayMode: |-
+                    =If(
+                        ThisItem.STATUS_FLUXO in [
+                            "APROVADA",
+                            "REPROVADA"
+                        ] || ThisItem.EMAIL_USUARIO_APROVADOR <> VGB_USUARIO_LOGADO_EMAIL,
+                        DisplayMode.Disabled,
+                        DisplayMode.Edit
+                    )
+                Height: =35
+                Icon: =Icon.CancelBadge
+                OnSelect: |-
+                    =UpdateContext({VLC_LOADING: true});
+                    UpdateContext(
+                        {
+                            VLC_AA_REPROVAR_CONF: true,
+                            VLC_AA_TIPO_FLUXO: ThisItem.TIPO_FLUXO,
+                            VLC_AA_ID_FLUXO_N2: ThisItem.ID_FLUXO_N2,
+                            VLC_AA_ID_SOLICITACAO: ThisItem.ID_SOLICITACAO
+                        }
+                    );
+                    UpdateContext({VLC_LOADING: false})
+                Tooltip: ="Reprovar"
+                Width: =35
+                X: =1256
+                Y: =8
+                ZIndex: =27
+
+        AA_CT_FUNDO_FILTRO As groupContainer.manualLayoutContainer:
+            BorderStyle: =BorderStyle.None
+            Fill: =RGBA(39, 67, 125, 0.14)
+            Height: =111
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            Width: =1296
+            X: =15
+            Y: =15
+            ZIndex: =2
+
+            AA_CT_FUNDO_FILTRO_MATRICULA As text:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                Default: =""
+                Format: =TextFormat.Number
+                HintText: =""
+                MaxLength: =50
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =10
+                Width: =268
+                X: =28
+                Y: =42
+                ZIndex: =2
+
+            AA_CT_FUNDO_FILTRO_MATRICULA_TITULO As label:
+                FontWeight: =FontWeight.Bold
+                Height: =35
+                PaddingLeft: =0
+                Text: ="Matrícula SIA - Inscrição"
+                Width: =268
+                X: =28
+                Y: =7
+                ZIndex: =3
+
+            AA_CT_FUNDO_FILTRO_CB_STATUS_FLUXO As combobox:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =0
+                ChevronBackground: =RGBA(39, 67, 125, 1)
+                DefaultSelectedItems: =["EM APROVAÇÃO"]
+                DisplayFields: =["Value"]
+                InputTextPlaceholder: =""
+                IsSearchable: =false
+                Items: |-
+                    =[
+                        "APROVADA",
+                        "REPROVADA",
+                        "EM APROVAÇÃO"
+                    ]
+                SearchFields: =["Value"]
+                SearchItems: =[]
+                SelectMultiple: =false
+                Size: =10
+                Width: =187
+                X: =309
+                Y: =42
+                ZIndex: =15
+
+            AA_CT_FUNDO_FILTRO_CB_STATUS_FLUXO_TITULO As label:
+                FontWeight: =FontWeight.Bold
+                Height: =35
+                PaddingLeft: =0
+                Text: ="Aprovação"
+                Width: =187
+                X: =309
+                Y: =7
+                ZIndex: =16
+
+            AA_CT_FUNDO_FILTRO_CB_MINHA_APROVACAO As toggleSwitch:
+                BorderStyle: =BorderStyle.None
+                Default: =true
+                FalseText: ="Todas"
+                TrueFill: =RGBA(39, 67, 125, 1)
+                TrueText: ="Minhas"
+                Visible: =!IsBlank(VGB_USUARIO_LOGADO_PERFIL.NOM_USUARIO_TIPO)
+                Width: =125
+                X: =520
+                Y: =48
+                ZIndex: =17
+
+        AA_CT_FUNDO_COD_MATRICULA_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Matrícula SIA - Incrição"
+            Width: =170
+            X: =42
+            Y: =133
+            ZIndex: =3
+
+        AA_CT_FUNDO_NOM_ALUNO_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Nome"
+            Width: =331
+            X: =212
+            Y: =133
+            ZIndex: =4
+
+        AA_CT_FUNDO_VIGENCIA_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Vigência"
+            Width: =94
+            X: =543
+            Y: =133
+            ZIndex: =5
+
+        AA_CT_FUNDO_STATUS_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Status"
+            Width: =113
+            X: =687
+            Y: =133
+            ZIndex: =6
+
+        AA_CT_FUNDO_PCT_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="PCT"
+            Width: =50
+            X: =637
+            Y: =133
+            ZIndex: =9
+
+        AA_CT_FUNDO_APROVADOR_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Aprovador"
+            Width: =235
+            X: =800
+            Y: =133
+            ZIndex: =10
+
+        AA_CT_FUNDO_APROVACAO_TITULO As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =35
+            OnSelect: =
+            Size: =10
+            Text: ="Solicitação / Aprovação"
+            Width: =145
+            X: =1035
+            Y: =133
+            ZIndex: =11
+
+        AA_CT_FUNDO_AVISO_REGISTROS As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Semibold
+            Text: ="Sem registros"
+            Visible: |-
+                =If(
+                    CountRows(AA_CT_FUNDO_GALL.AllItems) = 0,
+                    true,
+                    false
+                )
+            Width: =1323
+            Y: =387
+            ZIndex: =13
+
+        AA_EMAIL_HTML_SOLICITACAO As htmlViewer:
+            Height: =329
+            HtmlText: |-
+                ="
+                Prezado(a),<br><br>
+                Você possui uma solicitação de bolsa para aprovação, acesse o link <a href='https://apps.powerapps.com/play/e/d46c5c55-f92c-eab8-8606-e4ecf7727302/a/e0a2fee8-c0fd-4927-b436-645440011c2e?tenantId=29e081cc-983f-4d52-b1d0-103595213bc6&hint=78e73437-a41e-4e53-a8c2-618c64b3ade7&sourcetime=1694541300264'><b>GABe</b></a>.<br><br>
+                
+                <b>Detalhe:</b><br>
+                Lote: "&VLC_AA_LOTE&"<br>
+                Nome: "&Proper(VLC_AA_NOM_ALUNO)&"<br>
+                Tipo Curso: "&Proper(VLC_AA_NOM_TIPO_CURSO)&"<br>
+                Marca: "&Proper(VLC_AA_NOM_MARCA)&"<br>
+                Percentual: "&VLC_AA_PCT&"<br><br>
+                Observação: "&AA_APROVAR_CONF_TXT_JUSITICATIVA.Text&"
+                <br><br>
+                Att,<br>
+                <b>Aplicações e Automações</b><br>
+                Diretoria de Pricing e Produtos"
+            Visible: =false
+            Width: =391
+            X: =744
+            Y: =306
+            ZIndex: =14
+
+        AA_EMAIL_HTML_APROVACAO As htmlViewer:
+            Height: =502
+            HtmlText: |-
+                ="
+                Prezado(a),<br><br>
+                A Bolsa abaixo está aprovada e pronta para lançamento.<br><br>
+                Matricula SIA / Inscrição: "&VLC_AA_COD_MATRICULA
+                &"<br>Nome: "          &Proper(VLC_AA_NOM_ALUNO)
+                &"<br>Percentual: "    &VLC_AA_PCT
+                &"<br>Data início: "   &VLC_AA_DT_INICIO
+                &"<br>Data fim: "      &VLC_AA_DT_FIM
+                &"<br>Curso todo: "    &If(VLC_AA_IND_CURSO_TODO = true,"Sim","Não")
+                &"<br>Tipo curso: "    &Proper(VLC_AA_NOM_TIPO_CURSO)
+                &"<br>Marca: "         &Proper(VLC_AA_NOM_MARCA)
+                &"<br>Tipo da bolsa: " &Proper(VLC_AA_NOM_SOLICITACAO_TIPO)
+                &"<br>Data solicitação: " &VLC_AA_DT_REFERENCIA
+                &"<br>Data aprovação: "   &Now()
+                &"<br><br>
+                Caso queira acessar o aplicativo, clique no link <a href='https://apps.powerapps.com/play/e/d46c5c55-f92c-eab8-8606-e4ecf7727302/a/e0a2fee8-c0fd-4927-b436-645440011c2e?tenantId=29e081cc-983f-4d52-b1d0-103595213bc6&hint=78e73437-a41e-4e53-a8c2-618c64b3ade7&sourcetime=1694541300264'><b>GABe</b></a>.<br><br>
+                
+                Esta bolsa foi aprovada por:<br>"&
+                If(
+                    CountRows(CLC_AA_EMAIL_APROVADORES) > 1,
+                    First(CLC_AA_EMAIL_APROVADORES).Value&"<br>"&
+                    Last(CLC_AA_EMAIL_APROVADORES).Value&"<br><br>",
+                    First(CLC_AA_EMAIL_APROVADORES).Value&"<br><br>"
+                )&"
+                Att,<br>
+                <b>Aplicações e Automações</b><br>
+                Diretoria de Pricing e Produtos"
+            Visible: =false
+            Width: =453
+            X: =42
+            Y: =126
+            ZIndex: =15
+
+    AA_REPROVAR_CONF As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =768
+        Visible: =VLC_AA_REPROVAR_CONF
+        Width: =1366
+        ZIndex: =4
+
+        AA_REPROVAR_CONF_DESCRICAO As button:
+            BorderThickness: =1
+            Color: =RGBA(0, 0, 0, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(237, 237, 237, 1)
+            Height: =311
+            PaddingBottom: =150
+            PaddingLeft: =0
+            PaddingTop: =0
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Deseja realmente reprovar solicitação?"
+            Width: =576
+            X: =395
+            Y: =229
+            ZIndex: =1
+
+        AA_REPROVAR_CONF_BTN_SIM As button:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            DisplayMode: =If(Len(AA_REPROVAR_CONF_TXT_JUSITICATIVA) > 0,DisplayMode.Edit,DisplayMode.Disabled)
+            Fill: =RGBA(0, 166, 90, 1)
+            FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =UpdateContext({VLC_LOADING: true});
+                Switch(
+                    VLC_AA_TIPO_FLUXO,
+                    "N0",
+                    Refresh(A_GABE_V_FLUXO);
+                    If(
+                        AA_CT_FUNDO_GALL.Selected.STATUS_FLUXO = "EM APROVAÇÃO",
+                        Patch(
+                            A_GABE_D_FLUXO,
+                            Defaults(A_GABE_D_FLUXO),
+                            {
+                                ID_USUARIO: VGB_USUARIO_LOGADO_ID,
+                                ID_SOLICITACAO: VLC_AA_ID_SOLICITACAO,
+                                IND_STATUS: "R",
+                                IND_APROVACAO_N2: 0,
+                                OBS: AA_REPROVAR_CONF_TXT_JUSITICATIVA.Text,
+                                DT_REFERENCIA: Now()
+                            }
+                        );
+                        If(
+                            IsEmpty(Errors(A_GABE_D_FLUXO)),
+                            Refresh(A_GABE_D_FLUXO);
+                            NewForm(SL_CT_FORM);
+                            ResetForm(SL_CT_FORM);
+                            Notify(
+                                "Solicitação reprovada com suscesso !",
+                                NotificationType.Success,
+                                3000
+                            ),
+                            Notify(
+                                "Ocorreu um erro, tente novamente !",
+                                NotificationType.Error,
+                                3000
+                            )
+                        )
+                    ),
+                    "N2",
+                    If(
+                        AA_CT_FUNDO_GALL.Selected.STATUS_FLUXO = "EM APROVAÇÃO",
+                        Patch(
+                            A_GABE_D_FLUXO_N2,
+                            LookUp(A_GABE_D_FLUXO_N2,ID_FLUXO_N2 = VLC_AA_ID_FLUXO_N2),
+                            {
+                                IND_APROVADO: 0,
+                                IND_REMOVIDO: 0,
+                                OBS: AA_REPROVAR_CONF_TXT_JUSITICATIVA.Text,
+                                DT_REFERENCIA: Now()
+                            }
+                        );
+                        If(
+                            IsEmpty(Errors(A_GABE_D_FLUXO_N2)),
+                            Refresh(A_GABE_D_FLUXO_N2);
+                            NewForm(SL_CT_FORM);
+                            ResetForm(SL_CT_FORM);
+                            Notify(
+                                "Solicitação reprovada com suscesso !",
+                                NotificationType.Success,
+                                3000
+                            ),
+                            Notify(
+                                "Ocorreu um erro, tente novamente !",
+                                NotificationType.Error,
+                                3000
+                            )
+                        )
+                    )
+                );
+                Refresh(A_GABE_V_FLUXO);
+                Select(AA_REPROVAR_CONF_BTN_FECHAR);
+                UpdateContext({VLC_LOADING: false})
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Sim"
+            Visible: =true//vPPConfirmaBolsa
+            X: =510
+            Y: =350
+            ZIndex: =2
+
+        AA_REPROVAR_CONF_BTN_NAO As button:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            Fill: =RGBA(221, 75, 57, 1)
+            FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Select(AA_REPROVAR_CONF_BTN_FECHAR)
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Não"
+            Visible: =true//vPPConfirmaBolsa
+            X: =695
+            Y: =350
+            ZIndex: =3
+
+        AA_REPROVAR_CONF_TITULO As button:
+            BorderThickness: =1
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(0, 28, 67, 1)
+            Height: =50
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =16
+            Text: ="Confirmação"
+            Width: =576
+            X: =395
+            Y: =229
+            ZIndex: =4
+
+        AA_REPROVAR_CONF_BTN_FECHAR As icon.CancelBadge:
+            BorderStyle: =BorderStyle.None
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =35
+            Icon: =Icon.CancelBadge
+            OnSelect: |-
+                =UpdateContext({VLC_AA_REPROVAR_CONF: false});
+                Reset(AA_REPROVAR_CONF_TXT_JUSITICATIVA)
+            Visible: =true//vPPConfirmaBolsa
+            Width: =35
+            X: =921
+            Y: =236
+            ZIndex: =5
+
+        AA_REPROVAR_CONF_TXT_JUSITICATIVA As text:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            Default: =
+            Height: =111
+            HintText: ="Justificativa"
+            Mode: =TextMode.MultiLine
+            Size: =12
+            Width: =541
+            X: =415
+            Y: =405
+            ZIndex: =6
+
+    AA_APROVAR_CONF As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =768
+        Visible: =VLC_AA_APROVAR_CONF
+        Width: =1366
+        ZIndex: =5
+
+        AA_APROVAR_CONF_DESCRICAO As button:
+            BorderThickness: =1
+            Color: =RGBA(0, 0, 0, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(237, 237, 237, 1)
+            Height: =392
+            PaddingBottom: =220
+            PaddingLeft: =0
+            PaddingTop: =0
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Deseja realmente aprovar ?"
+            Width: =576
+            X: =395
+            Y: =188
+            ZIndex: =1
+
+        AA_APROVAR_CONF_BTN_SIM As button:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            DisplayMode: |-
+                =DisplayMode.Edit
+                /*If(
+                    IsBlank(AA_APROVAR_CONF_CB_STATUS_FLUXO.Selected) && VLC_AA_TIPO_FLUXO = "N0";
+                    //&& !(VLC_SS_ID_USUARIO_N2 = VGB_USUARIO_LOGADO_ID && VLC_SS_IND_STATUS = "N");
+                    DisplayMode.Disabled;
+                    DisplayMode.Edit
+                )*/
+            Fill: =RGBA(0, 166, 90, 1)
+            FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: |-
+                =UpdateContext({VLC_LOADING: true});
+                Refresh(A_GABE_V_FLUXO);
+                Switch(
+                    VLC_AA_TIPO_FLUXO,
+                    "N0",
+                    If(
+                        AA_CT_FUNDO_GALL.Selected.STATUS_FLUXO = "EM APROVAÇÃO",
+                        //APROVAR UMA SOLICITAÇÃO
+                        UpdateContext(
+                            {
+                                VLC_AA_FLUXO: Patch(
+                                    A_GABE_D_FLUXO,
+                                    Defaults(A_GABE_D_FLUXO),
+                                    {
+                                        ID_USUARIO: VGB_USUARIO_LOGADO_ID,
+                                        ID_SOLICITACAO: VLC_AA_ID_SOLICITACAO,
+                                        IND_STATUS: If(
+                                            Len(AA_APROVAR_CONF_CB_STATUS_FLUXO.Selected.Mail) > 0,
+                                            "N",
+                                            "A"
+                                        ),
+                                        IND_APROVACAO_N2: If(
+                                            Len(AA_APROVAR_CONF_CB_STATUS_FLUXO.Selected.Mail) > 0,
+                                            1,
+                                            0
+                                        ),
+                                        OBS: AA_APROVAR_CONF_TXT_JUSITICATIVA.Text,
+                                        DT_REFERENCIA: Now()
+                                    }
+                                )
+                            }
+                        );
+                        Switch(
+                            VLC_AA_FLUXO.IND_STATUS,
+                            "N",
+                            Patch(
+                                A_GABE_D_FLUXO_N2,
+                                Defaults(A_GABE_D_FLUXO_N2),
+                                {
+                                    ID_USUARIO_SOLICITANTE: VGB_USUARIO_LOGADO_ID,
+                                    EMAIL_APROVADOR: AA_APROVAR_CONF_CB_STATUS_FLUXO.Selected.Mail,
+                                    ID_FLUXO: VLC_AA_FLUXO.ID_FLUXO,
+                                    IND_APROVADO: Blank(),
+                                    IND_REMOVIDO: 0,
+                                    OBS: AA_APROVAR_CONF_TXT_JUSITICATIVA.Text,
+                                    DT_REFERENCIA: Blank()
+                                }
+                            );
+                            If(
+                                IsEmpty(Errors(A_GABE_D_FLUXO_N2)),
+                                Patch(
+                                    A_GABE_D_SOLICITACAO_EMAIL,
+                                    Defaults(A_GABE_D_SOLICITACAO_EMAIL),
+                                    {
+                                        LOTE: VLC_AA_LOTE,
+                                        ID_SOLICITACAO: VLC_AA_ID_SOLICITACAO,
+                                        TITULO: "[GABe] [" & VLC_AA_LOTE & "] Solicitação de bolsa para aprovação",
+                                        REMETENTE: VGB_USUARIO_LOGADO_EMAIL,
+                                        DESTINATARIO: AA_APROVAR_CONF_CB_STATUS_FLUXO.Selected.Mail,
+                                        CORPO: AA_EMAIL_HTML_SOLICITACAO.HtmlText,
+                                        DT_REFERENCIA: Now(),
+                                        IND_ENVIADO: 0
+                                    }
+                                )
+                            ),
+                            "A",
+                            Refresh(A_GABE_V_FLUXO);
+                            ClearCollect(
+                                CLC_AA_EMAIL_APROVADORES,
+                                Distinct(
+                                    Filter(
+                                        A_GABE_V_FLUXO,
+                                        LOTE = VLC_AA_LOTE
+                                    ),
+                                    EMAIL_USUARIO_APROVADOR
+                                )
+                            );
+                            If(
+                                IsEmpty(Errors(A_GABE_D_FLUXO)),
+                                Patch(
+                                    A_GABE_D_SOLICITACAO_EMAIL,
+                                    Defaults(A_GABE_D_SOLICITACAO_EMAIL),
+                                    {
+                                        LOTE: VLC_AA_LOTE,
+                                        ID_SOLICITACAO: VLC_AA_ID_SOLICITACAO,
+                                        TITULO: "[GABe] [" & VLC_AA_LOTE & "] " & VLC_AA_NOM_SOLICITACAO_TIPO,
+                                        REMETENTE: VGB_USUARIO_LOGADO_EMAIL,
+                                        DESTINATARIO: VLC_AA_EMAIL_USUARIO_SOLICITANTE,
+                                        CORPO: AA_EMAIL_HTML_APROVACAO.HtmlText,
+                                        DT_REFERENCIA: Now(),
+                                        IND_ENVIADO: 0
+                                    }
+                                )
+                            )
+                        );
+                        If(
+                            IsEmpty(Errors(A_GABE_D_FLUXO)),
+                            Refresh(A_GABE_D_FLUXO);
+                            NewForm(SL_CT_FORM);
+                            ResetForm(SL_CT_FORM);
+                            Notify(
+                                "Solicitação aprovada com suscesso !",
+                                NotificationType.Success,
+                                3000
+                            ),
+                            Notify(
+                                "Ocorreu um erro, tente novamente !",
+                                NotificationType.Error,
+                                3000
+                            )
+                        )
+                    ),
+                    "N2",
+                    If(
+                        IsBlank(
+                            LookUp(
+                                A_GABE_D_FLUXO_N2,
+                                ID_FLUXO_N2 = VLC_AA_ID_FLUXO_N2
+                            ).IND_APROVADO
+                        ),
+                        //APROVAR UMA SOLICITAÇÃO
+                        Patch(
+                            A_GABE_D_FLUXO_N2,
+                            LookUp(
+                                A_GABE_D_FLUXO_N2,
+                                ID_FLUXO_N2 = VLC_AA_ID_FLUXO_N2
+                            ),
+                            {
+                                IND_APROVADO: 1,
+                                IND_REMOVIDO: 0,
+                                OBS: AA_APROVAR_CONF_TXT_JUSITICATIVA.Text,
+                                DT_REFERENCIA: Now()
+                            }
+                        );
+                        If(
+                            IsEmpty(Errors(A_GABE_D_FLUXO_N2)),
+                            Refresh(A_GABE_D_FLUXO_N2);
+                            NewForm(SL_CT_FORM);
+                            ResetForm(SL_CT_FORM);
+                            Refresh(A_GABE_V_FLUXO);
+                            ClearCollect(
+                                CLC_AA_EMAIL_APROVADORES,
+                                Distinct(
+                                    Filter(
+                                        A_GABE_V_FLUXO,
+                                        LOTE = VLC_AA_LOTE
+                                    ),
+                                    EMAIL_USUARIO_APROVADOR
+                                )
+                            );
+                            Patch(
+                                A_GABE_D_SOLICITACAO_EMAIL,
+                                Defaults(A_GABE_D_SOLICITACAO_EMAIL),
+                                {
+                                    LOTE: VLC_AA_LOTE,
+                                    ID_SOLICITACAO: VLC_AA_ID_SOLICITACAO,
+                                    TITULO: "[GABe] [" & VLC_AA_LOTE & "] " & VLC_AA_NOM_SOLICITACAO_TIPO,
+                                    REMETENTE: VGB_USUARIO_LOGADO_EMAIL,
+                                    DESTINATARIO: VLC_AA_EMAIL_USUARIO_SOLICITANTE,
+                                    CORPO: AA_EMAIL_HTML_APROVACAO.HtmlText,
+                                    DT_REFERENCIA: Now(),
+                                    IND_ENVIADO: 0
+                                }
+                            );
+                            Notify(
+                                "Solicitação aprovada com suscesso !",
+                                NotificationType.Success,
+                                3000
+                            ),
+                            Notify(
+                                "Ocorreu um erro, tente novamente !",
+                                NotificationType.Error,
+                                3000
+                            )
+                        )
+                    )
+                );
+                Select(AA_APROVAR_CONF_BTN_FECHAR);
+                Refresh(A_GABE_V_FLUXO);
+                UpdateContext({VLC_LOADING: false})
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Sim"
+            Visible: =true//vPPConfirmaBolsa
+            X: =510
+            Y: =511
+            ZIndex: =2
+
+        AA_APROVAR_CONF_BTN_NAO As button:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            Fill: =RGBA(221, 75, 57, 1)
+            FocusedBorderColor: =ColorFade(Self.Fill, 75%)
+            HoverFill: =ColorFade(Self.Fill, -20%)
+            OnSelect: =Select(AA_APROVAR_CONF_BTN_FECHAR)
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: ="Não"
+            Visible: =true//vPPConfirmaBolsa
+            X: =695
+            Y: =511
+            ZIndex: =3
+
+        AA_APROVAR_CONF_TITULO As button:
+            BorderThickness: =1
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(0, 28, 67, 1)
+            Height: =50
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =16
+            Text: ="Confirmação"
+            Width: =576
+            X: =395
+            Y: =188
+            ZIndex: =4
+
+        AA_APROVAR_CONF_BTN_FECHAR As icon.CancelBadge:
+            BorderStyle: =BorderStyle.None
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =35
+            Icon: =Icon.CancelBadge
+            OnSelect: |-
+                =UpdateContext({VLC_AA_APROVAR_CONF: false});
+                Reset(AA_APROVAR_CONF_CB_STATUS_FLUXO);
+                Reset(AA_APROVAR_CONF_TXT_JUSITICATIVA)
+            Visible: =true//vPPConfirmaBolsa
+            Width: =35
+            X: =921
+            Y: =195
+            ZIndex: =5
+
+        AA_APROVAR_CONF_CB_STATUS_FLUXO As combobox:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            ChevronBackground: =RGBA(39, 67, 125, 1)
+            DisplayFields: =["DisplayName","JobTitle"]
+            DisplayMode: |-
+                =If(
+                    VLC_AA_TIPO_FLUXO = "N0",
+                    DisplayMode.Edit,
+                    DisplayMode.Disabled    
+                )
+            InputTextPlaceholder: =""
+            Items: |-
+                =/*
+                Filter(
+                    AddColumns(CLC_AA_APROVADOR;"APROVADOR";NOM_USUARIO_AREA&" "&EMAIL_USUARIO);
+                    ID_USUARIO <> VGB_USUARIO_LOGADO_ID
+                )*/
+                UsuáriosdoOffice365.SearchUser({searchTerm:Self.SearchText})
+            SearchFields: =["DisplayName"]
+            SearchItems: |-
+                =Search(/*
+                Filter(
+                    AddColumns(CLC_AA_APROVADOR;"APROVADOR";NOM_USUARIO_AREA&" "&EMAIL_USUARIO);
+                    ID_USUARIO <> VGB_USUARIO_LOGADO_ID
+                )*/
+                UsuáriosdoOffice365.SearchUser({searchTerm:Self.SearchText}),AA_APROVAR_CONF_CB_STATUS_FLUXO.SearchText,"DisplayName")
+            SelectMultiple: =false
+            Template: =ListItemTemplate.Person
+            Width: =409
+            X: =547
+            Y: =309
+            ZIndex: =6
+
+        AA_APROVAR_CONF_N2_TITULO As label:
+            DisplayMode: =AA_APROVAR_CONF_CB_STATUS_FLUXO.DisplayMode
+            FontWeight: =FontWeight.Bold
+            Text: |-
+                ="2º aprovação:"
+            Width: =132
+            X: =415
+            Y: =309
+            ZIndex: =7
+
+        AA_APROVAR_CONF_TXT_JUSITICATIVA As text:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            Default: =
+            Height: =111
+            HintText: ="Observação"
+            Mode: =TextMode.MultiLine
+            Size: =12
+            Width: =541
+            X: =415
+            Y: =372
+            ZIndex: =8
+
+    AA_POPUP_VIEW As groupContainer.manualLayoutContainer:
+        Fill: =RGBA(0, 0, 0, 0.5)
+        Height: =768
+        Visible: =VLC_AA_POPUP_VIEW
+        Width: =1366
+        ZIndex: =6
+
+        AA_POPUP_VIEW_FUNDO As button:
+            BorderThickness: =1
+            Color: =RGBA(0, 0, 0, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(237, 237, 237, 1)
+            Height: =480
+            PaddingLeft: =0
+            PaddingTop: =0
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Text: =
+            Width: =1250
+            X: =58
+            Y: =156
+            ZIndex: =1
+
+        AA_POPUP_VIEW_TITULO As button:
+            BorderThickness: =1
+            DisabledColor: =RGBA(255, 255, 255, 1)
+            DisplayMode: =DisplayMode.View
+            Fill: =RGBA(0, 28, 67, 1)
+            Height: =50
+            RadiusBottomLeft: =5
+            RadiusBottomRight: =5
+            RadiusTopLeft: =5
+            RadiusTopRight: =5
+            Size: =16
+            Text: ="Visualizar solicitação"
+            Width: =1250
+            X: =58
+            Y: =156
+            ZIndex: =2
+
+        AA_POPUP_VIEW_FORM As formViewer:
+            BorderStyle: =BorderStyle.None
+            DataSource: =A_GABE_V_SOLICITACAO
+            Fill: =RGBA(26, 26, 26, 0.05)
+            Height: =431
+            Item: =LookUp(A_GABE_V_SOLICITACAO,ID_SOLICITACAO = VLC_AA_ID_SOLICITACAO)
+            NumberOfColumns: =1
+            SnapToColumns: =false
+            Width: =1250
+            X: =58
+            Y: =206
+            ZIndex: =3
+
+            AA_POPUP_VIEW_NOM_ALUNO_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="NOM_ALUNO"
+                Default: =ThisItem.NOM_ALUNO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Nome:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =312
+                X: =0
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey14_3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_NOM_ALUNO_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey14_3.Y + DataCardKey14_3.Height + 5
+                    ZIndex: =2
+
+            AA_POPUP_VIEW_CPF_ALUNO_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="CPF_ALUNO"
+                Default: =ThisItem.CPF_ALUNO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="CPF:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =77
+                Required: =false
+                Width: =190
+                X: =1
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey30_3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_CPF_ALUNO_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey30_3.Y + DataCardKey30_3.Height + 5
+                    ZIndex: =2
+
+            AA_POPUP_VIEW_COD_MATRICULA_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="COD_MATRICULA"
+                Default: =ThisItem.COD_MATRICULA
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Matrícula:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =77
+                Required: =false
+                Width: =186
+                X: =2
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey13_3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_COD_MATRICULA_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey13_3.Y + DataCardKey13_3.Height + 5
+                    ZIndex: =2
+
+            AA_POPUP_VIEW_DT_REFERENCIA_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="DT_REFERENCIA"
+                Default: =ThisItem.DT_REFERENCIA
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Solicitação:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =84
+                Required: =false
+                Width: =208
+                X: =3
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey29_3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_DT_REFERENCIA_DATACARD_VALUE As label:
+                    Align: =Align.Center
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey29_3.Y + DataCardKey29_3.Height + 5
+                    ZIndex: =2
+
+            AA_POPUP_VIEW_EMAIL_SOLICITANTE_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="EMAIL_USUARIO"
+                Default: =ThisItem.EMAIL_USUARIO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Email solicitante:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =77
+                Required: =false
+                Width: =312
+                X: =4
+                Y: =0
+                ZIndex: =1
+
+                DataCardKey25_3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_EMAIL_SOLICITANTE_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey25_3.Y + DataCardKey25_3.Height + 5
+                    ZIndex: =2
+
+            AA_POPUP_VIEW_NOM_TIPO_CURSO_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="NOM_TIPO_CURSO"
+                Default: =ThisItem.NOM_TIPO_CURSO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Tipo curso:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =188
+                X: =0
+                Y: =1
+                ZIndex: =1
+
+                DataCardKey15_3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_NOM_TIPO_CURSO_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey15_3.Y + DataCardKey15_3.Height + 5
+                    ZIndex: =2
+
+            AA_POPUP_VIEW_MATRICULA_FUNCIONAL_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="MATRICULA_FUNCIONAL"
+                Default: =ThisItem.MATRICULA_FUNCIONAL
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Matrícula funcional:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =312
+                X: =3
+                Y: =1
+                ZIndex: =1
+
+                DataCardKey16 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_MATRICULA_FUNCIONAL_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey16.Y + DataCardKey16.Height + 5
+                    ZIndex: =2
+
+            AA_POPUP_VIEW_PCT_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="PCT"
+                Default: =ThisItem.PCT
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Percentual:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =188
+                X: =0
+                Y: =2
+                ZIndex: =1
+
+                DataCardKey19_3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_PCT_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default&"%"
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey19_3.Y + DataCardKey19_3.Height + 5
+                    ZIndex: =2
+
+            AA_POPUP_VIEW_DT_INICIO_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="DT_INICIO"
+                Default: =ThisItem.DT_INICIO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Início vigência:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =201
+                X: =1
+                Y: =2
+                ZIndex: =1
+
+                DataCardKey27_3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_DT_INICIO_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Right(Parent.Default,7)
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey27_3.Y + DataCardKey27_3.Height + 5
+                    ZIndex: =2
+
+            AA_POPUP_VIEW_DT_FIM_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="DT_FIM"
+                Default: =ThisItem.DT_FIM
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Fim vigência:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =40
+                Required: =false
+                Width: =188
+                X: =2
+                Y: =2
+                ZIndex: =1
+
+                DataCardKey28_3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_DT_FIM_DATACARD_VALUE As label:
+                    AutoHeight: =true
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =27
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Right(Parent.Default,7)
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey28_3.Y + DataCardKey28_3.Height + 5
+                    ZIndex: =2
+
+            AA_POPUP_VIEW_MOTIVO_DATACARD As typedDataCard.textualViewCard:
+                BorderStyle: =BorderStyle.Solid
+                DataField: ="MOTIVO"
+                Default: =ThisItem.MOTIVO
+                DisplayMode: =DisplayMode.View
+                DisplayName: |-
+                    ="Motivo solicitação:"
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =153
+                Required: =false
+                Width: =550
+                X: =0
+                Y: =3
+                ZIndex: =1
+
+                DataCardKey21_3 As label:
+                    AutoHeight: =true
+                    Color: =RGBA(0, 0, 0, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =34
+                    PaddingBottom: =0
+                    Text: =Parent.DisplayName
+                    Width: =Parent.Width - 60
+                    Wrap: =false
+                    X: =30
+                    Y: =10
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_MOTIVO_DATACARD_VALUE As label:
+                    DisplayMode: =Parent.DisplayMode
+                    Height: =111
+                    Overflow: =Overflow.Scroll
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =11
+                    Text: =Parent.Default
+                    Width: =Parent.Width - 60
+                    X: =30
+                    Y: =DataCardKey21_3.Y + DataCardKey21_3.Height + 5
+                    ZIndex: =2
+
+        AA_POPUP_VIEW_BTN_FECHAR As icon.CancelBadge:
+            Color: =RGBA(255, 255, 255, 1)
+            Height: =35
+            Icon: =Icon.CancelBadge
+            OnSelect: |-
+                =UpdateContext({VLC_AA_POPUP_VIEW:false})
+            Visible: =true//vPPConfirmaBolsa
+            Width: =35
+            X: =1258
+            Y: =163
+            ZIndex: =4
+
+        AA_POPUP_VIEW_STATUS As groupContainer.manualLayoutContainer:
+            BorderStyle: =BorderStyle.None
+            Fill: =RGBA(26, 26, 26, 0.05)
+            Height: =326
+            RadiusBottomLeft: =10
+            RadiusBottomRight: =10
+            RadiusTopLeft: =10
+            RadiusTopRight: =10
+            Width: =668
+            X: =625
+            Y: =293
+            ZIndex: =5
+
+            "AA_POPUP_VIEW_STATUS_GALL As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                BorderStyle: =BorderStyle.None
+                Height: =270
+                Items: |-
+                    =If(
+                        IsBlank(VLC_AA_IND_STATUS) && VLC_AA_TIPO_FLUXO = "N0",
+                        Sort(
+                            Table(
+                                {
+                                    STATUS_FLUXO: "EM APROVAÇÃO",
+                                    EMAIL_USUARIO_APROVADOR: Blank(),
+                                    DT_REFERENCIA: Blank(),
+                                    OBS: Blank(),
+                                    NOM_USUARIO_TIPO_APROVADOR_2: VLC_AA_NOM_USUARIO_TIPO_N1
+                                }
+                            ),
+                            DT_REFERENCIA,
+                            SortOrder.Descending
+                        ),    
+                        CLC_AA_FLUXO_STATUS
+                    )
+                Layout: =Layout.Vertical
+                NavigationStep: =5
+                ShowNavigation: =true
+                ShowScrollbar: =false
+                TemplatePadding: =10
+                TemplateSize: =50
+                Width: =667
+                Y: =46
+                ZIndex: =1
+
+                AA_POPUP_VIEW_STATUS_GALL_FUNDO As button:
+                    DisplayMode: =DisplayMode.View
+                    Fill: =RGBA(39, 67, 125, 0.15)
+                    Height: =50
+                    RadiusBottomLeft: =5
+                    RadiusBottomRight: =5
+                    RadiusTopLeft: =5
+                    RadiusTopRight: =5
+                    Text: =""
+                    Width: =647
+                    ZIndex: =1
+
+                AA_POPUP_VIEW_STATUS_GALL_STATUS_FLUXO As label:
+                    Align: =Align.Center
+                    Color: =AA_POPUP_VIEW_STATUS_GALL_FUNDO_STATUS.Fill
+                    FontWeight: =FontWeight.Bold
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =9
+                    Text: =ThisItem.STATUS_FLUXO
+                    Tooltip: =ThisItem.OBS
+                    Width: =124
+                    X: =523
+                    ZIndex: =2
+
+                AA_POPUP_VIEW_STATUS_GALL_EMAIL_USUARIO_APROVADOR As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =9
+                    Text: =ThisItem.EMAIL_USUARIO_APROVADOR
+                    Width: =255
+                    X: =187
+                    ZIndex: =3
+
+                AA_POPUP_VIEW_STATUS_GALL_FUNDO_STATUS As button:
+                    DisplayMode: =DisplayMode.View
+                    Fill: |-
+                        =Switch(
+                            ThisItem.STATUS_FLUXO,
+                            "APROVADA", RGBA(118,161,58,1),
+                            "REPROVADA",RGBA(221, 75, 57, 1),
+                            RGBA(62,138,176,1)
+                        )
+                    Height: =50
+                    RadiusBottomLeft: =5
+                    RadiusBottomRight: =5
+                    RadiusTopLeft: =5
+                    RadiusTopRight: =5
+                    Text: =""
+                    Tooltip: |-
+                        ="Observação: "&If(IsBlank(ThisItem.OBS),"N/A",Proper(ThisItem.OBS))
+                    Width: =30
+                    ZIndex: =17
+
+                AA_POPUP_VIEW_STATUS_GALL_DT_REFERENCIA As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =9
+                    Text: =ThisItem.DT_REFERENCIA
+                    Width: =81
+                    X: =442
+                    ZIndex: =24
+
+                AA_POPUP_VIEW_STATUS_GALL_NOM_USUARIO_TIPO_APROVADOR As label:
+                    Align: =Align.Center
+                    FontWeight: =FontWeight.Semibold
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =9
+                    Text: =Proper(ThisItem.NOM_USUARIO_TIPO_APROVADOR_2)
+                    Width: =157
+                    X: =30
+                    ZIndex: =25
+
+            AA_POPUP_VIEW_STATUS_TITULO As label:
+                Align: =Align.Center
+                FontWeight: =FontWeight.Bold
+                Text: ="Status fluxo de aprovação"
+                Width: =667
+                Y: =6
+                ZIndex: =2
+
+    AA_COMP_LOADING As COMP_LOADING:
+        Visible: =VLC_LOADING
+        ZIndex: =7
+
+    AA_FUNCAO_VERSAO_MANUTENCAO As button:
+        BorderStyle: =BorderStyle.None
+        BorderThickness: =0
+        Height: =30
+        OnSelect: |-
+            =UpdateContext({VLC_LOADING: true});
+            //Verifica a versão
+            Refresh(A_AA_D_MANUTENCAO);
+            ClearCollect(CLC_A_AA_D_MANUTENCAO,LookUp(A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO));
+            If(Trim(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).VERSAO) = VGB_VERSAO,Set(VGB_POPUP_VERSAO, false),Set(VGB_POPUP_VERSAO, true));
+            //Verifica o status manutenção/atualização
+            If(LookUp(CLC_A_AA_D_MANUTENCAO,DESCRICAO_PRODUTO = VGB_DESCRICAO_PRODUTO).IND_STATUS > 0,Set(VGB_POPUP_MANUTENCAO, true),Set(VGB_POPUP_MANUTENCAO, false));
+            UpdateContext({VLC_LOADING: false})
+        Text: ="FUNCAO_VERSAO_MANUTENCAO"
+        Visible: =false
+        Width: =331
+        X: =568
+        Y: =10
+        ZIndex: =8
+
+    AA_COMP_MANUTENCAO As COMP_MANUTENCAO:
+        VAR_DESCRICAO: |-
+            =Switch(
+                First(CLC_A_AA_D_MANUTENCAO).IND_STATUS,
+                1,"Sistema em manutenção",
+                2,"Sistema em atualização"
+            )
+        VAR_DESCRICAO_STATUS: =First(CLC_A_AA_D_MANUTENCAO).DESCRICAO_STATUS
+        Visible: =VGB_POPUP_MANUTENCAO
+        ZIndex: =9
+
+    AA_COMP_VERSAO As COMP_VERSAO:
+        Visible: =VGB_POPUP_VERSAO
+        ZIndex: =10
+

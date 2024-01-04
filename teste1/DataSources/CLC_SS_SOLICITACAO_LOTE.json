@@ -1,0 +1,9 @@
+[
+  {
+    "IsComponentScoped": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "Name": "CLC_SS_SOLICITACAO_LOTE",
+    "Type": "CollectionDataSourceInfo"
+  }
+]

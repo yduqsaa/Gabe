@@ -1,0 +1,40 @@
+[
+  {
+    "ApiId": "/providers/microsoft.powerapps/apis/shared_sql",
+    "CdpRevision": {
+      "BaseUrl": "/v2",
+      "LastChangedTimeString": "2023-08-21T16:21:01.4850000Z",
+      "RevisionNumber": 2
+    },
+    "ConnectedDataSourceInfoNameMapping": {
+      "57dfb1b5-7d79-4046-a4da-fd831d5befe1-KeyId": "KeyId",
+      "COD_MATRICULA": "COD_MATRICULA",
+      "DT_FIM": "DT_FIM",
+      "DT_INICIO": "DT_INICIO",
+      "DT_REFERENCIA": "DT_REFERENCIA",
+      "DT_REFERENCIA_SOLICITACAO": "DT_REFERENCIA_SOLICITACAO",
+      "EMAIL_USUARIO_APROVADOR": "EMAIL_USUARIO_APROVADOR",
+      "ID_FLUXO": "ID_FLUXO",
+      "ID_FLUXO_N2": "ID_FLUXO_N2",
+      "ID_SOLICITACAO": "ID_SOLICITACAO",
+      "ID_USUARIO_APROVADOR": "ID_USUARIO_APROVADOR",
+      "ID_USUARIO_TIPO_APROVADOR": "ID_USUARIO_TIPO_APROVADOR",
+      "IND_APROVACAO_N2": "IND_APROVACAO_N2",
+      "IND_LOTE": "IND_LOTE",
+      "IND_STATUS": "IND_STATUS",
+      "LOTE": "LOTE",
+      "NOM_ALUNO": "NOM_ALUNO",
+      "NOM_USUARIO_TIPO_APROVADOR": "NOM_USUARIO_TIPO_APROVADOR",
+      "OBS": "OBS",
+      "PCT": "PCT",
+      "STATUS_FLUXO": "STATUS_FLUXO",
+      "TIPO_FLUXO": "TIPO_FLUXO"
+    },
+    "DatasetName": "sqlpricingltv.database.windows.net,DEV",
+    "EncodeDataset": false,
+    "IsSampleData": false,
+    "IsWritable": false,
+    "Name": "A_GABE_V_FLUXO_STATUS",
+    "Type": "ConnectedDataSourceInfo"
+  }
+]

@@ -1,0 +1,32 @@
+COMP_LOADING As CanvasComponent:
+    Fill: =RGBA(0, 28, 67, 1)
+    Height: =Max(App.Height, App.MinScreenHeight)
+    Width: =Max(App.Width, App.MinScreenWidth)
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    COMP_LOADING_LOGO As image:
+        Height: =294
+        Image: =logo_yduqs
+        Width: =1366
+        Y: =170
+        ZIndex: =1
+
+    COMP_LOADING_GIF As image:
+        Height: =111
+        Image: ='Gif-Simples'
+        ImagePosition: =ImagePosition.Fill
+        Width: =600
+        X: =383
+        Y: =353
+        ZIndex: =3
+
+    COMP_LOADING_TEXTO As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Text: ="Carregando . . ."
+        Width: =1366
+        Y: =436
+        ZIndex: =4
+
